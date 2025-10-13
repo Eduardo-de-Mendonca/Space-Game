@@ -1,0 +1,66 @@
+Planetas:
+    Cada planeta pode ter algumas propriedades que o diferenciam dos demais:
+        Alguns (3?) recursos mais abundantes (pedra, ferro, etc.)
+            Ou então há alguns recursos que estão em todos os planetas (como terra e água). E cada planeta tem uns 3 recursos especiais.
+
+        Uma cor específica associada a cada recurso
+            Por exemplo, podemos ter um planeta em que a água é vermelha e a terra é branca.
+
+        Algumas (3?) espécies de inimigos
+
+        Um nível?
+            Que determinaria o quão fortes são os inimigos. Se quisermos, pode determinar também um nível para os recursos (um planeta nível 5 pode ter ferro nível 5, que demora mais para quebrar, mas que constrói armaduras melhores)
+
+            Ter níveis ajuda a fazer uma curva de dificuldade interessante
+                O jogador pode encontrar um planeta de nível alto e decidir se assume o risco de enfrentar o planeta mesmo sem estar bem preparado ou se volta depois. Isso é interessante.
+
+        Tudo isso pode ser gerado automaticamente!
+            Podemos criar uma lista de possíveis tipos de recursos, e uma lista de inimigos, e uma lista de cores...
+
+            Ao criar um planeta automaticamente, o jogo sorteia 3 recursos e 3 inimigos das listas, e associa uma cor aleatória a cada recurso. E aí, temos um planeta
+                Depois só falta rodar noise para determinar a "altitude" (onde visualmente tem mar, montanhas... sei que Carlos já fez isso em uns projetos de p5)
+
+    Tamanho
+        Acho que seria divertido se a superfície de um planeta, mesmo que gerada automaticamente, não fosse infinita. O mapa poderia ter o formato de um círculo, de forma que, se você sai do planeta por um lado, você aparece do outro lado, simulando o comportamento de um planeta redondo
+
+Progressão
+    Para dar um norte ao jogador, ele poderia também ter um nível, que aumenta ganhando XP ao derrotar os inimigos
+        Subir de nível não necessariamente te torna mais forte.
+
+        Em vez disso, você começa sem nenhuma receita de crafting. Sempre que você sobe de nível, você aprende uma nova receita de crafting. Isso te incentiva a procurar um planeta que tenha os materiais necessários para essa receita e construir a receita nova.
+
+        Isso cria um loop engajante de "constrói receita -> fica mais forte -> derrota inimigos -> ganha XP -> desbloqueia uma nova receita -> procura um planeta com o recurso necessário -> constrói a nova receita"
+
+    Isso significaria que, de certa forma, o jogo dura tanto quanto houver receitas de crafting para aprender
+        Mas é inviável a gente ficar programando dezenas de ferramentas e objetos diferentes.
+
+        Mas há maneiras de ser eficiente com isso...
+            Por exemplo, uma espada. Em certo nível, você aprende a fazer espada com 1 madeira e 1 ferro. Em um nível posterior, você pode aprender a fazer espada nível 2 com 1 madeira e 1 ferro nível 2
+
+            Então a gente pode "encher linguiça" com melhorias numéricas desse tipo. E elas também contribuem com o loop engajante: o jogador vai precisar procurar um planeta nível 2 que tenha ferro, para poder fazer a espada nível 2. Esse planeta, naturalmente, vai ter inimigos mais difíceis.
+                E não precisamos programas especificamente inimigos mais difíceis, é claro. Um inimigo nível 2 pode ser simplesmente um inimigo nível 1 com atributos aumentados de acordo com uma função matemática simples (a exemplo de multiplicar o HP pelo nível)
+
+Gameplay na superfície de um planeta
+    Estamos pensando em um jogo visto de cima, a exemplo de Stardew Valley
+
+    Pensei um pouco sobre o esquema de controles...
+        WASD para andar
+
+        Clica para interagir (por exemplo, clicar em uma bancada de crafting para abrir o menu de crafting, clicar na nave para decolar...)
+
+        Apertar um outro botão (como espaço ou clique com o botão direito, ou qualquer um dos dois) para usar o que você tem na mão
+            Se for uma espada, isso ataca
+            Se for um recurso como terra ou madeira, isso constrói
+            Se for uma ferramenta como pá ou machado, isso usa a ferramenta para bater onde você clicou (ou então na frente do personagem)
+
+Outras funcionalidades
+    Para mim, é essencial ter um mapa do espaço
+        Quando você pousa em um planeta, ele é adicionado no mapa, e você pode ver a localização dele depois
+
+        Você pode clicar em qualquer lugar do mapa para adicionar um "marcador". Aí, fora do mapa, aparece uma setinha apontando na direção de onde está o marcador.
+
+        No tutorial do jogo, ele pode já marcar no seu mapa onde estão os "3 planetas finais"
+            Isto é, os 3 planetas onde estão os pedaços do documento de aposentadoria
+
+        Se pá, dá pra colocar uma funcionalidade de clicar em um recurso necessário para uma receita de crafting e ele marca no seu mapa o planeta mais próximo com aquele recurso
+            Mas isso não é prioritário

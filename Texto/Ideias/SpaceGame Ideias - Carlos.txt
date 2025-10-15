@@ -1,0 +1,92 @@
+﻿Minhas Ideias e Considerações (Carlos)
+
+
+Planetas:
+        
+        Primeiro temos três cenários que eu peguei até agora nas nossas conversas:
+1. O Espaço: que é o Hub world, acho que seria muito mais interessante se esse fosse visto top-down, do tipo que você pode navegar livremente por aí etc.
+2. A Fase em si: Nesse caso são os planetas, que são vistos top down, num primeiro momento os planetas são só quadradões contíguos, sem transições ou sub-áreas
+3. A base: essa base é onde você pode construir, modificar e tal. Acho que ter coisas que você só consegue fazer na base pode parecer limitante no início, mas acho que é interessante essa limitação justamente para dar sentido e ciclos de ida e volta pro jogo. Essa base seria a espaçonave? Eu já tinha dito que a princípio construir nos planetas ia ser mais difícil e talvez desnecessário
+
+
+Eu concordo com os comentários do Dudu, acho que cada planeta podia ser gerado pegando aleatoriamente alguns templates de recursos etc.
+Mas tudo seria gerado aleatoriamente com noise? Acho que precisava de alguma estrutura para ter senso de história ou desafios grandes
+Acho que o mais sofisticado é usar a aleatoriedade, mas ter algumas partes fixas? Não sei como fazer isso de cara, mas fica aí as ideias
+
+
+A ideia dos recursos especiais é bem bacana, cada planeta tem que ter sua personalidade e acho melhor evitar de ter planetas filler. No mans sky é um exemplo de jogo dessa vibe que tinha infinitos planetas chatos de explorar e por isso flopou no começo. Acho que qualidade é melhor do que quantidade e eu seguro meu entusiasmo um pouco na geração procedural pura por que nunca se compara com partes feitas à mão. Mas isso a gente vai vendo conforme o bonde anda também
+
+
+Os planetas terem níveis é uma ótima ideia. É importante até nesses projetos mais amadores que o jogo tenha um senso de direção ou classificação das coisas. Os níveis irem aumentando é um jeito fácil de fazer isso. Você liberar seus primeiros planetas e ver um com 3 níveis acima da média até então te dá medo e ao mesmo tempo uma curiosidade perigosa, tipo o Lethal Company com seus níveis de dificuldade para as luas
+
+
+A morte tem que existir nesse jogo e tem que ter penalidades é claro.
+
+
+Dudu fala de gerar várias coisas automaticamente com combinações. Essa é em si só uma ótima ideia e é um jeito inteligente de ter variedade e replay value. Só ponho aquela minha ressalva sobre a questão de qualidade acima de quantidade, na minha visão. E ter um senso de história ou alguma coisa identificável em cada planeta, o que é difícil pondo tudo aleatório
+
+
+Mas aí entramos no debate de qual é o loop do jogo? Eu estava pensando que poderia ser um survival livre mas que para progredir há certos planetas ou eventos como bosses que você tem que enfrentar/fazer . É óbvio que num primeiro momento de teste de possibilidades é só sandbox, mas acho que o objetivo poderia ser eventualmente amarrar tudo em algum objetivo maior.
+
+
+O loop que eu tava pensando é que você tem “camadas” do hub world. Cada camada tem uma quantidade arbitrária x de planetas que você descobre de uma vez e você vai progredindo liberando camada por camada etc. para dar um senso de progressão para o jogo. O loop é ir para planeta, fazer algo, talvez coletar recursos, cumprir um objetivo, matar um chefe e depois voltar para a base, se recuperar etc. e depois voltar etc.
+
+
+Seria interessante no meu ver esse loop de ir e voltar, talvez possam discordar. Mas você percebe que muitos jogos são assim. Mario 64 te expulsa da fase, por exemplo quando você pega uma estrela, senão era só ir passando pela fase e pegar tudo numa leva só e aí acabou. Isso é até criticado. Mas no meu ver, a expulsão da fase é propositalmente para te forçar a explorar e revisitar os lugares com mais detalhe, explorar novos caminhos de A para B etc.  Em um jogo survival isso geralmente é determinado por um stat como fome (ou oxigênio nos planetas) que dá um senso de urgência e te obriga a voltar eventualmente e se recuperar/melhorar e aí voltar mais forte.
+
+
+Se o planeta for grande poderia ter checkpoints para teleporte. Dead Cells por exemplo tem um jeito inteligente de criar mapas procedurais, mas que ao mesmo tempo integram certos elementos/estruturas fixas para dar um senso de estrutura ou controle sobre a narrativa, e mesmo no mapa procedural os teleports são decididos de maneira inteligente
+
+
+Eu também tô imaginando que a geração procedural é feita uma vez para cada planeta por save, não cada vez que você entra no planeta no mesmo save
+
+
+
+
+    Tamanho
+        
+O mapa poderia ser finito e de diferentes tamanhos, zonas etc. Talvez os mapas mais fáceis teriam algo que faria os interessantes para revisitar depois. Isso é comum também, Mario 64 tem isso com estrelas que precisam de poderes especiais e até o Odyssey com os cubos de metal
+
+
+Progressão
+
+
+A ideia de nível de Dudu é boa e um jeito inteligente de gerar mais conteúdo.
+Eu acho bacana que o personagem tenha um nível (talvez ele tenha stats para melhorar ou talvez a melhoria seja só na tecnologia não sei)
+As armas e itens podem ter níveis também, esse é um jeito mais fácil de gerar ferramentas
+Outro jeito mais preguiçoso do que criar novos itens para gerar mais conteúdo é usando encantamentos ou modificações para as armas. Dead Cells e Minecraft fazem isso
+
+
+Eu acho que a ideia padrão é essa mesma: Pega receitas de itens por vários jeitos (alguns são aleatórios (Exemplo: achou num baú), outros talvez controlados pela narrativa)
+Depois que tem a receita você pode craftar eles com os recursos e assim o jogo vai progredindo
+
+
+A ideia dos inimigos terem níveis é também uma ideia básica e inteligente para deixar eles mais interessantes e aumentar o desafio de acordo
+
+
+
+
+Gameplay na superfície de um planeta
+
+
+Sem comentários aqui
+        
+Outras funcionalidades
+
+
+Um mapa é uma boa ideia, tanto no hub quanto no planeta, mas o mapa tem que ir sendo desbloqueado também eu acredito. Os teleports poderiam ir revelando o mapa por exemplo etc. etc.
+
+
+Eu sinceramente não parei para pensar em batalhas de espaçonave não por mais que isso tenha sido mencionado eu acho. O que eu pensei até agora foi nisso de survival e combate nos planetas
+
+
+Tem aquela questão que eu falei da progressão, essa ideia de ir liberando planetas mais difíceis acho bem bacana. Os planetas vão naturalmente aumentando de nível, o nível do planeta determina de modo geral os níveis dos recursos, inimigos, receitas etc.
+Os planetas vão tendo recursos mais valiosos, inimigos mais difíceis etc.
+A gente usa da geração procedural, níveis etc. para gerar mais conteúdo de forma mais inteligente, sem dar tanto trabalho assim
+
+
+Sobre a história, a ideia do profissional pós-meia-idade cansado querendo se aposentar é bacana, dá um toque de humor e personalidade que eu acho importante nesses projetos para diferenciar eles de qualquer outro sketch por aí
+
+
+Diálogo é algo que eu pessoalmente acho interessante, principalmente para o personagem na sua cabeça e talvez o vilão/vilões etc. Mas isso é algo que tem que ver. NPCs seriam interessantes, mas tem que ver também o que vai rolar e o que não vai. Sempre focando no essencial e fundamental primeiro. 
+Essas são minhas ideias e considerações. É bom estarmos todos na mesma página e conversarmos e discutirmos essas coisas

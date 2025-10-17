@@ -1,0 +1,16 @@
+No geral, gostei bastante das ideias do projeto realmente é meio ambcioso pro prazo, mas considerando que isso pode se tornar um hobbie e ajudar no nosso desenvolvimento como programadores, só vejo benefícioes em fazer um bom trabalho.
+
+Algumas ideias no geral, com base no que foi dito por Carlos e Edu:
+  1. Em relação a questão de crafting e o enredo, acho interessante limitar certas áreas de alguns planetas a determinados itens de crafting 
+    (que você libera durante a jornada, mas não necessariamente naquele ponto), isso permitiria um certo "back tracking", do tipo dos metroidvanias(um gênero que eu gosto de jogar).
+    Basicamente, a ideia seria que, um item especial, ou um chefe secreto, ou até mesmo uma receita de crafting estivessem escondidos nessas áreas secretas 
+    (daria até espaço pra gente colocar alguns easter eggs), mas, para isso, você ou precisaria de um item ou chave, que só poderia ser feita com a receita específica.
+
+  2.Uma coisa que não sei se vocês gostariam de implementar ainda, mas seria divertido se desse, seria a movimentação da nave no espaço e, talvez fazer algum minigame no estilo daquele jogo
+    de navinha. Acho que, para esse caso, poderíamos até usar um pouco da apresentação do João (pois o movimento dos autõmatos poderia ser influenciado pelo mouse ou o wsad e, eles se parecem 
+    (ou podem parecer mais) com uma nave. Exemplo da sketch do joão: https://editor.p5js.org/natureofcode/sketches/Y74O77yxy.
+
+  3. Vi que vocês estavam comentando sobre fazer planetas de qualidade do que muitos planetas. Então, talvez a gente poderia fazer planetas de diferentes elementos 
+      (em que em cada um teria 1 ou 2 inimigos únicos) e os outros poderiam ser inimigos padrões (como se cada planeta tievesse uma fauna hostil, o que fosse controlada pelos vilões)
+
+Essas são minhas adições no momento, projeto tá bem legal, agora o ideial é entender e aplicar esses conceitos, de pouco a pouco, através do pygames.

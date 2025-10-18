@@ -1,0 +1,9 @@
+Não sei direito quais os limites da seed do noise
+    Sei que tem que ser inteiro. Mas quando coloco uns números muito altos, o planeta sai só um monte de faixas retas de areia. E quando coloco mais altos ainda, ele trava e nem consegue gerar o noise.
+
+    Coloquei um inteiro aleatório de 0 a 99.
+        A desvantagem disso é que isso só gera até 100 relevos únicos.
+
+        Mas isso não é um problema muito grande
+            100 é um número grandão
+            Além disso, planetas diferentes podem ter thresholds de cor diferentes e, como já discutimos, cores diferentes, de forma que o mesmo relevo pode parecer totalmente diferente.

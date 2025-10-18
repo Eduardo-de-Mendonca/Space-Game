@@ -1,0 +1,6 @@
+Fazer um personagem que anda pela superfície do planeta
+
+Fazer uma câmera que segue o personagem
+
+Fazer uma tela SpaceHubScreen
+    Que instancia a tela PlanetSurfaceScreen como subscreen

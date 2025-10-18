@@ -1,0 +1,46 @@
+Opiniões de Dudu sobre as ideias de Carlos e Marco
+
+Ideias de Carlos:
+    Três cenários:
+        Concordo plenamente. Os planetas, a princípio, não têm sub-áreas.
+        Penso que a base não deve ser a espaçonave, e sim uma estação espacial. A espaçonave é o 'personagem' que você controla quando está no espaço (hub world), e a base seria um dos destinos que você consegue atingir a partir do hub world, assim como os planetas.
+
+    Como ter aleatoriedade e partes fixas?
+        A princípio, pensei em fazer o mais basicão:
+            Um monte de planetas aleatórios. Aí, os três planetas que são relevantes para a história (que têm os três pedaços do documento de aposentadoria) teriam uns bosses construídos à mão. Além disso, um boss final (possivelmente na base/estação espacial) também construído à mão
+
+            Mas entendo que essa abordagem é meio chata. Estou aberto a boas ideias.
+
+    Diferentes camadas
+        A ideia das camadas é boa. Eu tinha pensado em, inicialmente, deixar o jogador ir para onde quiser e dane-se. Mas a ideia de dividir em camadas é genial. Vamos ver se entendi direito...
+            Inicialmente, o jogador só consegue explorar uma camada, isto é, um raio em torno da estação espacial. Se ele tentar sair da camada com a nave, ele não consegue (alguma gravidade? sei lá).
+
+            Essa camada tem uns (4?) planetas. Só após o jogador fazer alguma coisa, o raio explorável aumenta, efetivamente desbloqueando mais uma 'camada' do mapa. Nesse momento, a nova camada gera mais alguns planetas. E o jogo progride assim.
+
+    Loop de ir e voltar para a base
+        Ter uma razão para ficar sempre voltando para a base é bem legal. Mas não acho que isso exige uma mecânica (como fome ou oxigênio) que verdadeiramente te expulse.
+
+        Basta, por exemplo, restringir o crafting à base. Aí, o jogador vai para um planeta, pega materiais, volta para a base e crafta. E aí temos um loop que faz o jogador voltar, ao mesmo tempo sem colocá-lo em um limite de tempo.
+
+    Coisas que acho não prioritárias:
+        Combate de espaçonave:
+            É bem legal. Mas infelizmente talvez não caiba no prazo
+
+        Diálogo:
+            Eu penso em só colocar um cadinho de texto na cutscene inicial e na final. Acho que ficar escrevendo diálogo para o decorrer do jogo não cabe no prazo.
+
+Ideias de Marco
+    1
+        Alguns craftáveis podem desbloquear regiões de planetas de maneira orgânica. Por exemplo, um barco pode ser um craftável, de forma que te permite andar na água. Isso pode satisfazer um pouco de nosso desejo por "progressão metroidvania" no jogo.
+
+    2
+        Como falei, combate espacial é algo super maneiro. Mas precisamos priorizar o combate na superfície (se ele não for divertido, então o jogo inteiro cai por terra)
+        Quando tivermos combate na superfície maneiro implementado, e tivermos também o básico da progressão do jogo, aí que pensaríamos em combate espacial, em minha opinião.
+        Porém, é claro, aceitar essa ordem de prioridades envolve correr o risco de não dar tempo, e o combate espacial nunca ser implementado.
+
+    3
+        Acho que nós três estamos mais ou menos alinhados sobre como funcionariam os planetas.
+
+        Pelo que entendi do que você e Carlos estão dizendo, para garantirmos que os planetas são legais, a geração aleatória de planetas pode ficar apenas como ferramenta no back-end. Isto é, geramos os planetas aleatoriamente ao longo do desenvolvimento, mas depois que achamos planetas maneiros, nós colocamos seeds fixas, de forma que o mapa, na verdade, é fixo.
+
+        Podemos ter planetas gerados aleatoriamente em tempo de execução apenas se houver algum tipo de prosseguimento infinito após zerar o jogo. Mas obviamente conteúdo post-game não é uma prioridade.

@@ -1,6 +1,4 @@
-import pygame
-from settings import *
-from classes import *
+from screens import *
 
 pygame.init()
 
@@ -9,7 +7,16 @@ pygame.display.set_caption("Space Game")
 
 clock = pygame.time.Clock()
 
-start_screen = StartScreen(surface)
+earth = Planet(
+    colors.dark_blue,
+    colors.blue,
+    colors.light_yellow,
+    colors.light_green,
+    colors.dark_green,
+    colors.gray,
+    colors.white
+)
+start_screen = PlanetSurfaceScreen(surface, earth)
 
 while True:
     for event in pygame.event.get():

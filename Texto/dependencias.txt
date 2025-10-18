@@ -1,0 +1,11 @@
+Grafo de dependências do projeto
+
+main.py
+    Importa screens.py
+        Importa classes.py
+            Importa noise
+            
+            Importa settings.py
+                Importa pygame
+                Importa random
+            

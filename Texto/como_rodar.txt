@@ -1,0 +1,6 @@
+Precisa instalar as bibliotecas, rodando...
+pip install pygame
+pip install noise
+
+E depois executar o projeto com Python:
+python main.py

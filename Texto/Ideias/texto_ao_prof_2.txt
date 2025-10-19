@@ -1,5 +1,5 @@
 ﻿Eduardo de Mendonça Freire
-Marco Antônio Tronco Félix
+Marco Antonio Tronco Félix
 João Pedro Peçanha Cotrim
 Carlos Augusto Bertão Rodrigues
 
@@ -48,6 +48,7 @@ Atribuição de cada um
 
 
 Considerações finais
+
 
 
  Estamos abertos a sugestões e acompanhamento por parte do professor para melhor esclarecer as ideias e atualizá-lo sobre novos desenvolvimentos no projeto.

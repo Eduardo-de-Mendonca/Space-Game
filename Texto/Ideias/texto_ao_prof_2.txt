@@ -1,0 +1,53 @@
+﻿Eduardo de Mendonça Freire
+Marco Antônio Tronco Félix
+João Pedro Peçanha Cotrim
+Carlos Augusto Bertão Rodrigues
+
+
+A ideia é fazer uma demonstração de  jogo eletrônico ambientado no espaço.
+
+
+Funcionalidades
+    É possível viajar pelo espaço em uma nave espacial. É possível também pousar em um planeta e explorá-lo.
+    Em um planeta, pensamos em pôr interações como recursos ou até inimigos para combater
+   Pensamos em gerar a superfície do planeta com as ferramentas de noise já exploradas no curso e outros efeitos conforme for viável com o tempo e recursos disponíveis
+  A ideia é oferecer um jogo simples, mas interessante e criativo feito até a entrega do trabalho final. O objetivo final é de fornecer uma experiência interativa interessante e explorar a aplicação e a capacidade de um jogo eletrônico no âmbito e espírito de um curso de programação criativa, usando todos os conhecimentos adquiridos até então
+
+
+História e objetivo
+
+
+    Pensamos em tornar o jogo mais interessante e leve por meio de uma história bem-humorada. O protagonista pode ser, por exemplo, um profissional que finalmente conseguiu acumular tempo de serviço o suficiente para se aposentar. Porém, algo trágico acontece: por exemplo, seu comprovante de tempo de serviço é rasgado em três partes e roubado. Isso faz com que o protagonista tenha que visitar planetas diferentes para recuperar seu documento.
+
+
+    Nosso principal foco, novamente, é em explorar as possibilidades de criação de mundos proceduralmente gerados por algoritmos e a interação do usuário com eles, explorando nossa criatividade. Dessa forma, é difícil nesse momento mensurar quais funcionalidades exatas e específicas serão incluídas, ou até se o jogo terá um final ou será aberto como um sandbox. Os detalhes específicos do jogo serão decididos com o decorrer da experiência de programação do jogo, o que temos até o momento é um plano geral de design e um código preliminar para a geração de mundos com noise e controle de personagem.
+
+
+Referências e inspirações
+
+
+    Quando se está na superfície de um planeta, pensamos que o jogo pode ter uma perspectiva de câmera vista de cima, a exemplo de jogos como Stardew Valley e Pokémon Emerald. O mesmo tipo de perspectiva de seguinte sketch de Carlos: https://editor.p5js.org/carlos.rodrigues.20241/sketches/zxkeJRtlI (por sinal, a sketch também exemplifica como noise pode ser utilizado para gerar a superfície de um planeta).
+
+
+    Com relação à jogabilidade, nosso projeto deve beber da fonte de outros jogos de sobrevivência. O principal exemplo do gênero é Minecraft. Porém, é claro, na perspectiva vista de cima que mencionei. Estamos explorando funcionalidades como coleta de recursos e combate de inimigos em mapas gerados de forma procedural por algoritmos, tomando como inspiração essas mesmas funcionalidades vistas em outros jogos como Terraria, Dead Cells etc., mas em uma escala menor no escopo do curso.
+
+
+Biblioteca e linguagem
+
+
+    Reconhecemos que o projeto elenca mais dificuldades por se tratar de um jogo eletrônico com várias partes e não apenas um único arquivo p5.js por exemplo. Para poder dividi-lo da maneira melhor organizada possível, pensamos em usar Python (principalmente porque tem tipagem um pouco mais confiável, sem sacrificar muito da conveniência de JavaScript). A biblioteca de escolha seria Pygame, a qual Eduardo já usou no passado.
+
+
+    A desvantagem, é claro, é não rodar nativamente no navegador. Porém, qualquer um com a versão mais recente de Python poderia rodar "pip install pygame" e talvez algumas outras bibliotecas que serão especificadas e executar "main.py" para jogar o jogo.
+
+
+Atribuição de cada um
+
+
+    Se tratando de um projeto grande, é difícil fixar previamente o papel de cada um. A ideia é que o projeto tenha um repositório no GitHub, e que dentro dele haja um arquivo de texto esclarecendo as próximas funcionalidades que precisam ser implementadas. A cada semana, cada um lê esse arquivo e decide o que é mais prioritário para avançar. Esse progresso, é claro, poderá ser mostrado ao professor no Google Classroom, usando, por exemplo, vídeos curtos.
+
+
+Considerações finais
+
+
+ Estamos abertos a sugestões e acompanhamento por parte do professor para melhor esclarecer as ideias e atualizá-lo sobre novos desenvolvimentos no projeto.

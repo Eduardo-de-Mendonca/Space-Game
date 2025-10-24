@@ -10,13 +10,16 @@ class Camera:
         self.max_zoom = 4.0
         self.zoom_speed = 0.05
 
-    def update(self, target):
+    def update(self, position):
         """
-        Updates the camera's offset to smoothly follow the target.
+        Updates the camera's offset to smoothly follow the target position.
         """
+        # Dudu: mudei isso. Em vez de receber o target e ler position, recebe logo a position. Isso torna mais fácil a câmera seguir diferentes tipos de objetos
+        
+        assert isinstance(position, pygame.math.Vector2)
         # Calculate target position to center the player
         # We divide by zoom to correct the offset as we zoom in/out
-        target_pos = target.position - pygame.math.Vector2(SCREEN_WIDTH / (2 * self.zoom), SCREEN_HEIGHT / (2 * self.zoom))
+        target_pos = position - pygame.math.Vector2(SCREEN_WIDTH / (2 * self.zoom), SCREEN_HEIGHT / (2 * self.zoom))
         
         # Use linear interpolation (lerp) for smooth, dampened movement
         # The 0.1 is the "lag" factor. Higher = snappier, Lower = smoother

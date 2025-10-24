@@ -1,16 +1,23 @@
-from Classes.planet import Planet
-from Classes.player import Player
-from Classes.camera import Camera
+from Classes.PlanetSurfaceStuff.planet import Planet
+from Classes.PlanetSurfaceStuff.player import Player
+from Classes.Others.camera import Camera
+from Classes.Others.save_data import SaveData
 from settings import *
 
 class Level: #Level é um cenário genérico, acho que é tipo o screen que o Edu usava
-    def __init__(self, screen, destination_id):
-        
+    '''
+    Um objeto Level representa a tela quando você está na superfície de um planeta
+    '''
+    def __init__(self, screen, save_data, planet):
+        assert isinstance(screen, pygame.Surface)
+        assert isinstance(save_data, SaveData)
+        assert isinstance(planet, Planet)
+
         self.screen = screen
         self.all_sprites = pygame.sprite.Group()
 
         # The Planet is now just a seed and a generator
-        self.planet = Planet(seed = 895) 
+        self.planet = planet
         
         # The player is created at a WORLD position
         self.player = Player(PLAYER_START_POS, self.all_sprites)
@@ -89,6 +96,7 @@ class Level: #Level é um cenário genérico, acho que é tipo o screen que o Ed
         for sprite in self.all_sprites:
             # Get sprite's world rect
             world_rect = sprite.rect
+            assert isinstance(world_rect, pygame.Rect)
             
             # Convert to screen rect
             screen_pos = self.camera.world_to_screen(world_rect.topleft)
@@ -110,7 +118,7 @@ class Level: #Level é um cenário genérico, acho que é tipo o screen que o Ed
         self.screen.fill('black')
 
         # --- Update Phase ---
-        self.camera.update(self.player)
+        self.camera.update(self.player.position)
         self.all_sprites.update(dt)
         self.manage_chunks()
         

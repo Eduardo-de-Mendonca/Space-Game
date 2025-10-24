@@ -58,4 +58,6 @@ class colors:
         TILE_TYPE_SNOW: white
     }
 
-
+# -- Agora as settings do espaço
+SPACESHIP_SPEED = 300
+PLANET_IN_SPACE_RADIUS = 500

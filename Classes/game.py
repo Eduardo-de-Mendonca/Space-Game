@@ -1,5 +1,6 @@
 from settings import *
-from Classes.level import Level
+from Classes.PlanetSurfaceStuff.level import Level, SaveData
+from Classes.SpaceStuff.space_level import SpaceLevel
 
 class Game:
     def __init__(self):
@@ -11,10 +12,10 @@ class Game:
         self.clock = pygame.time.Clock()
 
         self.running = True
-        self.state = "Test"
-        self.destination_id = 0
+        # self.state = "Test" - não acho que precisamos de uma máquina de estados aqui. A lógica de subtelas deve resolver isso.
 
-        self.level = Level(self.screen, self.destination_id)
+        self.save_data = SaveData()
+        self.level = SpaceLevel(self.screen, self.save_data) # Agora o level começa na tela do espaço! Ela que instancia os Levels de superfície quando necessário
 
     def run(self):
         # The main game loop

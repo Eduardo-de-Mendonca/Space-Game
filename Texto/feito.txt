@@ -1,0 +1,13 @@
+Carlos, em alguma data anterior:
+    Fazer um personagem que anda pela superfície do planeta
+
+    Fazer uma câmera que segue o personagem
+
+Dudu, em 24/10:
+    Reestrutura os imports
+        Coloca as classes em uma pasta Classes. É claro, vamos ajustar essa estrutura conforme a quantidade de arquivos cresce
+    
+        Retirei imports desnecessários
+            Todo mundo importa settings, que importa pygame. Então o único arquivo que precisa importar pygame é settings. Isso torna os imports um pouco mais legíveis
+
+        Atualizei o grafo de dependências de acordo

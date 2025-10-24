@@ -1,6 +1,5 @@
-Fazer um personagem que anda pela superfície do planeta
-
-Fazer uma câmera que segue o personagem
-
 Fazer uma tela SpaceHubScreen
     Que instancia a tela PlanetSurfaceScreen como subscreen
+
+Coisas a polir:
+    Fazer a câmera já começar na posição do personagem, em vez de começar no meio do nada e fazer um movimento rapidão

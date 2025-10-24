@@ -1,11 +1,23 @@
 Grafo de dependências do projeto
 
 main.py
-    Importa screens.py
-        Importa classes.py
-            Importa noise
-            
-            Importa settings.py
-                Importa pygame
+    Importa game
+        Importa settings
+            Importa math
+            Importa pygame
+
+        Importa level
+            Importa planet
+                Importa noise
+                Importa settings
                 Importa random
-            
+
+            Importa player
+                Importa settings
+
+            Importa camera
+                Importa settings
+                
+            Importa settings
+
+    Importa sys

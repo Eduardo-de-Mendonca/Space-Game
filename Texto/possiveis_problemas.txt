@@ -7,3 +7,5 @@ Não sei direito quais os limites da seed do noise
         Mas isso não é um problema muito grande
             100 é um número grandão
             Além disso, planetas diferentes podem ter thresholds de cor diferentes e, como já discutimos, cores diferentes, de forma que o mesmo relevo pode parecer totalmente diferente.
+
+    Desde então, a estrutura de como o noise é gerado mudou um pouco. Eu (Dudu) não tenho certeza se essas observações ainda valem

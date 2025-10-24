@@ -1,8 +1,5 @@
-import pygame
 from Classes.SpaceStuff.space_classes import SpaceShip, PlanetInSpace
-from Classes.Others.camera import Camera
-from Classes.Others.save_data import *
-from Classes.PlanetSurfaceStuff.level import Level
+from Classes.PlanetSurfaceStuff.level import *
 
 class SpaceLevel:
     '''

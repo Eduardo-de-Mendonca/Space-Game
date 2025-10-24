@@ -1,8 +1,7 @@
-from Classes.PlanetSurfaceStuff.planet import Planet
-from Classes.PlanetSurfaceStuff.player import Player
+
+from Classes.PlanetSurfaceStuff.player import *
 from Classes.Others.camera import Camera
-from Classes.Others.save_data import SaveData
-from settings import *
+from Classes.Others.save_data import *
 
 class Level: #Level é um cenário genérico, acho que é tipo o screen que o Edu usava
     '''

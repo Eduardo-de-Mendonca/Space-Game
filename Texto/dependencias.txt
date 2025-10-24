@@ -2,22 +2,23 @@ Grafo de dependências do projeto
 
 main.py
     Importa game
-        Importa settings
-            Importa math
-            Importa pygame
 
-        Importa level
-            Importa planet
-                Importa noise
-                Importa settings
-                Importa random
+        Importa space_level
+            Importa space_classes
 
-            Importa player
-                Importa settings
+            Importa level
+                Importa player
+                    Importa settings
+                        Importa math
+                        Importa pygame
 
-            Importa camera
-                Importa settings
-                
-            Importa settings
+                Importa camera
+                    Importa settings
+
+                Importa save_data
+                    Importa planet
+                        Importa noise
+                        Importa random
+                        Importa settings
 
     Importa sys

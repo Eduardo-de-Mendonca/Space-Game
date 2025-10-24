@@ -1,6 +1,4 @@
-from settings import *
-from Classes.PlanetSurfaceStuff.level import Level, SaveData
-from Classes.SpaceStuff.space_level import SpaceLevel
+from Classes.SpaceStuff.space_level import *
 
 class Game:
     def __init__(self):

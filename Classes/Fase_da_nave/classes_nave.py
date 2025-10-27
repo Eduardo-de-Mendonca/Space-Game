@@ -107,3 +107,4 @@ class Bullet:
         pygame.draw.circle(screen, (255,255,255), (int(self.x), int(self.y)), 3)
 
 
+

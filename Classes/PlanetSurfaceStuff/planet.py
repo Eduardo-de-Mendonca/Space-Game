@@ -4,9 +4,7 @@ import random
 
 class Planet:
     """
-    This class is now a PURE GENERATOR. It holds no map data.
-    Its only job is to answer the question:
-    "What is the tile data for the chunk at (chunk_x, chunk_y)?"
+    wip
     """
     def __init__(self, seed=None):
         if seed is None:

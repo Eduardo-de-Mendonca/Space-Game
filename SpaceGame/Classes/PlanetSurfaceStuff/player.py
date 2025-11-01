@@ -6,7 +6,7 @@ class Player(pygame.sprite.Sprite):
         Position is now in WORLD PIXELS, not screen pixels.
         """
         super().__init__(group)
-        self.image = pygame.Surface((TILE_SIZE, TILE_SIZE))
+        self.image = pygame.Surface((TILE_SIZE*0.7, TILE_SIZE*0.7))
         self.image.fill('red')
         
         # Position is now a high-precision Vector2 for physics

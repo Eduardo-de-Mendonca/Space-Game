@@ -1,6 +1,7 @@
 import noise
 from settings import *
 import random
+import settings
 
 class Planet:
     """
@@ -10,7 +11,7 @@ class Planet:
     """
     def __init__(self, seed=None):
         if seed is None:
-            self.seed = random.randint(0, 1000)
+            self.seed = random.randint(0, 10000)
         else:
             self.seed = seed
             
@@ -20,7 +21,7 @@ class Planet:
         # Layer 1: Massive continents. Low frequency, low detail.
         noise_scale_continental = 750 
         
-        val = noise.pnoise2(
+        val = noise.snoise2(
             world_x / noise_scale_continental, 
             world_y / noise_scale_continental, 
             octaves=2, 
@@ -28,20 +29,22 @@ class Planet:
             lacunarity=2.0, 
             base=self.seed
         )
+        val = (val +1)/2
         return val
     
     def get_elevation_noise(self, world_x, world_y):
         # Layer 2: Hills and mountains. Medium frequency, high detail.
-        noise_scale_elevation = 80.0
+        noise_scale_elevation = 120
         
-        val = noise.pnoise2(
+        val = noise.snoise2(
             world_x / noise_scale_elevation, 
             world_y / noise_scale_elevation, 
-            octaves=6, 
+            octaves=4, 
             persistence=0.5, 
             lacunarity=2.0, 
             base=self.seed + 1 # Use a different seed!
         )
+        val = (val +1)/2
         return val
 
     def generate_chunk_data(self, chunk_x, chunk_y):
@@ -59,30 +62,30 @@ class Planet:
                 world_y = (chunk_y * CHUNK_SIZE) + local_y
 
                 # --- Multi-Layer Noise Logic ---
-                
+                q_x = noise.snoise2(world_x / 100, world_y / 100)
+                q_y = noise.snoise2(world_x / 100 + 5.2, world_y / 100 + 1.3)
                 # 1. Get Continental Noise
-                continental_val = self.get_continental_noise(world_x, world_y)
-                
+                continental_val = self.get_continental_noise(world_x + (q_x*75), world_y + (q_y*75))
+                elevation_val = self.get_elevation_noise(world_x + (q_x*5), world_y + (q_y*5))
+
+                final_elevation_val = continental_val*0.7 + elevation_val*0.3
+
                 tile_type = TILE_TYPE_DEEP_WATER # Default
                 
                 # 2. Decide Land or Water
-                if continental_val < -0.2:
+                if final_elevation_val < 0.46:
                     tile_type = TILE_TYPE_DEEP_WATER
-                elif continental_val < 0.0:
+                elif final_elevation_val < 0.5:
                     tile_type = TILE_TYPE_WATER
                 else: 
-                    # --- This is LAND. Now check elevation. ---
-                    elevation_val = self.get_elevation_noise(world_x, world_y)
-                    #elevation_val = 0.1
-                    # Apply thresholds to the elevation noise
-                    # These are "crammed" around 0.0 to fight the bell-curve
-                    if elevation_val < -0.4:
+                    #final_elevation_val = 0.6
+                    if final_elevation_val< 0.53:
                         tile_type = TILE_TYPE_SAND
-                    elif elevation_val < 0.2:
+                    elif final_elevation_val < 0.68:
                         tile_type = TILE_TYPE_GRASS
-                    elif elevation_val < 0.3:
-                        tile_type = TILE_TYPE_FOREST
-                    elif elevation_val < 0.5:
+                    #elif final_elevation_val < 0.72:
+                    #    tile_type = TILE_TYPE_FOREST
+                    elif final_elevation_val < 0.8:
                         tile_type = TILE_TYPE_ROCK
                     else:
                         tile_type = TILE_TYPE_SNOW
@@ -117,7 +120,7 @@ class Planet:
                         map_surface.set_at((world_x, world_y), color)
         
         try:
-            pygame.image.save(map_surface, "debug_map.png")
+            pygame.image.save(map_surface, f"debug_map_{self.seed}.png")
             print("Successfully saved debug_map.png to your project folder.")
         except Exception as e:
             print(f"Error saving debug map: {e}")

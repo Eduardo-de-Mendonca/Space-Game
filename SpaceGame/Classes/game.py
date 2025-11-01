@@ -13,7 +13,8 @@ class Game:
         # self.state = "Test" - não acho que precisamos de uma máquina de estados aqui. A lógica de subtelas deve resolver isso.
 
         self.save_data = SaveData()
-        self.level = SpaceLevel(self.screen, self.save_data) # Agora o level começa na tela do espaço! Ela que instancia os Levels de superfície quando necessário
+        #self.level = SpaceLevel(self.screen, self.save_data) # Agora o level começa na tela do espaço! Ela que instancia os Levels de superfície quando necessário
+        self.level = SpaceLevel(self.screen, self.save_data)
 
     def run(self):
         # The main game loop

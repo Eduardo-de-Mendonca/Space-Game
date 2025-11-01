@@ -57,3 +57,9 @@ class SpaceLevel:
         self.space_ship.draw(self.screen, self.camera)
         for planet in self.planets:
             planet.draw(self.screen, self.camera)
+    
+    def generate_debug_map(self):
+        if self.sublevel != None:
+            self.sublevel.generate_debug_map()
+            return
+        print("No sublevel")

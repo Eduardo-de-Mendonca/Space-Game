@@ -6,4 +6,4 @@ class SaveData:
     '''
 
     def __init__(self):
-        self.all_planets = [Planet(seed=895)]
+        self.all_planets = [Planet()]

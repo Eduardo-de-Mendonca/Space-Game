@@ -1,4 +1,5 @@
 from settings import *
+from planet_templates import colors
 from Classes.Others.camera import Camera
 
 class PlanetInSpace:

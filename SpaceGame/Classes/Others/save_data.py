@@ -1,4 +1,5 @@
 from Classes.PlanetSurfaceStuff.planet import Planet
+from planet_templates import PlanetTemplate,EARTH_PLANET,LAVA_PLANET
 
 class SaveData:
     '''
@@ -6,4 +7,4 @@ class SaveData:
     '''
 
     def __init__(self):
-        self.all_planets = [Planet()]
+        self.all_planets = [Planet(template = LAVA_PLANET)]

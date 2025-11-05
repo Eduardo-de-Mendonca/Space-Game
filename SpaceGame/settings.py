@@ -26,7 +26,7 @@ WORLD_SIZE_PIXELS = (
 )
 # How many chunks to load around the player (e.g., 5x5 grid)
 LOAD_RADIUS_CHUNKS = 1
-
+'''
 # --- Tile Data Markers ---
 # We store data in our map, not colors
 TILE_TYPE_DEEP_WATER = 0
@@ -58,7 +58,7 @@ class colors:
         TILE_TYPE_FOREST: dark_green,
         TILE_TYPE_ROCK: gray,
         TILE_TYPE_SNOW: white
-    }
+    }'''
 
 # -- Agora as settings do espaço
 SPACESHIP_SPEED = 300

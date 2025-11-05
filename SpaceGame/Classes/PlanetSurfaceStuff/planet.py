@@ -2,6 +2,7 @@ import noise
 from settings import *
 import random
 import settings
+from planet_templates import PlanetTemplate, EARTH_PLANET, colors
 
 class Planet:
     """
@@ -9,22 +10,26 @@ class Planet:
     Its only job is to answer the question:
     "What is the tile data for the chunk at (chunk_x, chunk_y)?"
     """
-    def __init__(self, seed=None):
+    def __init__(self, seed=None, template: PlanetTemplate = EARTH_PLANET):
         if seed is None:
             self.seed = random.randint(0, 10000)
         else:
             self.seed = seed
+        
+        self.template = template
             
         print(f"Initializing planet with seed: {self.seed}")
+        print(f"Initializing planet with template: {self.template.template_id,self.template.name}")
 
     def get_continental_noise(self, world_x, world_y):
         # Layer 1: Massive continents. Low frequency, low detail.
-        noise_scale_continental = 750 
-        
+        noise_scale_continental = self.template.continental_noise.scale
+        continental_octaves = self.template.continental_noise.octaves
+
         val = noise.snoise2(
             world_x / noise_scale_continental, 
             world_y / noise_scale_continental, 
-            octaves=2, 
+            octaves=continental_octaves, 
             persistence=0.5, 
             lacunarity=2.0, 
             base=self.seed
@@ -34,12 +39,13 @@ class Planet:
     
     def get_elevation_noise(self, world_x, world_y):
         # Layer 2: Hills and mountains. Medium frequency, high detail.
-        noise_scale_elevation = 120
+        noise_scale_elevation = self.template.elevation_noise.scale
+        elevation_octaves = self.template.elevation_noise.octaves
         
         val = noise.snoise2(
             world_x / noise_scale_elevation, 
             world_y / noise_scale_elevation, 
-            octaves=4, 
+            octaves=elevation_octaves, 
             persistence=0.5, 
             lacunarity=2.0, 
             base=self.seed + 1 # Use a different seed!
@@ -68,27 +74,30 @@ class Planet:
                 continental_val = self.get_continental_noise(world_x + (q_x*75), world_y + (q_y*75))
                 elevation_val = self.get_elevation_noise(world_x + (q_x*5), world_y + (q_y*5))
 
-                final_elevation_val = continental_val*0.7 + elevation_val*0.3
+                pc,pe = self.template.continental_noise.weight, self.template.elevation_noise.weight
 
-                tile_type = TILE_TYPE_DEEP_WATER # Default
+                final_elevation_val = continental_val*pc + elevation_val*pe
+
+                tile_type = self.template.tile_map.deep_water # Default
                 
+                thresholds = self.template.thresholds
+
                 # 2. Decide Land or Water
-                if final_elevation_val < 0.46:
-                    tile_type = TILE_TYPE_DEEP_WATER
-                elif final_elevation_val < 0.5:
-                    tile_type = TILE_TYPE_WATER
+                if final_elevation_val < thresholds.deep_water:
+                    tile_type = self.template.tile_map.deep_water
+                elif final_elevation_val < thresholds.water:
+                    tile_type = self.template.tile_map.water
                 else: 
-                    #final_elevation_val = 0.6
-                    if final_elevation_val< 0.53:
-                        tile_type = TILE_TYPE_SAND
-                    elif final_elevation_val < 0.68:
-                        tile_type = TILE_TYPE_GRASS
-                    #elif final_elevation_val < 0.72:
-                    #    tile_type = TILE_TYPE_FOREST
-                    elif final_elevation_val < 0.8:
-                        tile_type = TILE_TYPE_ROCK
+                    if final_elevation_val< thresholds.sand:
+                        tile_type = self.template.tile_map.sand
+                    elif final_elevation_val < thresholds.grass:
+                        tile_type = self.template.tile_map.grass
+                    elif final_elevation_val < thresholds.forest:
+                        tile_type = self.template.tile_map.forest
+                    elif final_elevation_val < thresholds.rock:
+                        tile_type = self.template.tile_map.rock
                     else:
-                        tile_type = TILE_TYPE_SNOW
+                        tile_type = self.template.tile_map.snow
                 
                 row.append(tile_type)
             chunk_data.append(row)
@@ -120,7 +129,7 @@ class Planet:
                         map_surface.set_at((world_x, world_y), color)
         
         try:
-            pygame.image.save(map_surface, f"debug_map_{self.seed}.png")
+            pygame.image.save(map_surface, f"debug_map_{self.seed}_{self.template.name}.png")
             print("Successfully saved debug_map.png to your project folder.")
         except Exception as e:
             print(f"Error saving debug map: {e}")

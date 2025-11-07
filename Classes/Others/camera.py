@@ -59,3 +59,24 @@ class Camera:
 
         # Return a range of chunks to load, with a small buffer
         return range(start_chunk_x - (LOAD_RADIUS_CHUNKS - 1), end_chunk_x + LOAD_RADIUS_CHUNKS), range(start_chunk_y - (LOAD_RADIUS_CHUNKS - 1), end_chunk_y + LOAD_RADIUS_CHUNKS)
+
+class CameraWithoutZoom:
+    '''
+    Um wrapper para a câmera, o qual garante que o zoom é sempre exatamente 1
+    '''
+    def __init__(self):
+        self.camera = Camera()
+        self.camera.zoom = 1
+
+    def update(self, position):
+        return self.camera.update(position)
+
+    def world_to_screen(self, world_pos):
+        return self.camera.world_to_screen(world_pos)
+
+    def get_visible_chunk_coords(self):
+        return self.camera.get_visible_chunk_coords()
+    
+    def get_offset(self):
+        'Retorna a posição da câmera no mundo'
+        return self.camera.offset

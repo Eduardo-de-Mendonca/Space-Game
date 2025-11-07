@@ -2,6 +2,8 @@
 from Classes.PlanetSurfaceStuff.player import *
 from Classes.Others.camera import Camera
 from Classes.Others.save_data import *
+#from transition import TransitionScreen
+import random
 
 class Level: #Level é um cenário genérico, acho que é tipo o screen que o Edu usava
     '''
@@ -17,6 +19,17 @@ class Level: #Level é um cenário genérico, acho que é tipo o screen que o Ed
 
         # The Planet is now just a seed and a generator
         self.planet = planet
+
+        # Nave
+        self.entering_ship = False
+        self.ship_pos = pygame.Vector2(868, 775) #Para teste deixei uma posição fixa
+
+        #Caso queira uma posição aletória opção abaixo
+        #self.ship_pos = (random.randint(0, WORLD_SIZE_IN_CHUNKS[0] * CHUNK_SIZE - 1), 
+        #random.randint(0, WORLD_SIZE_IN_CHUNKS[1] * CHUNK_SIZE - 1))
+        
+        self.ship_radius = 16
+        self.sublevel = None
         
         # The player is created at a WORLD position
         self.player = Player(PLAYER_START_POS, self.all_sprites)
@@ -26,6 +39,8 @@ class Level: #Level é um cenário genérico, acho que é tipo o screen que o Ed
         
         # This dictionary will hold the *active* chunk data
         self.loaded_chunks = {}
+
+        self.running = True
 
     def manage_chunks(self):
         """
@@ -113,6 +128,23 @@ class Level: #Level é um cenário genérico, acho que é tipo o screen que o Ed
             scaled_image = pygame.transform.scale(sprite.image, (zoomed_width, zoomed_height))
             self.screen.blit(scaled_image, screen_rect)
 
+    def draw_ship(self):
+    # Converte a posição do mundo para a tela usando a câmera
+        screen_pos = self.camera.world_to_screen(self.ship_pos)
+    
+    # Desenha a nave como um círculo branco de raio 6 pixels
+        pygame.draw.circle(self.screen, (255, 255, 255), (int(screen_pos.x), int(screen_pos.y)), 6)
+    
+    def check_ship_interaction(self):
+        player_pos = self.player.position
+        distance = player_pos.distance_to(self.ship_pos)
+        if distance < self.ship_radius:
+            return True
+        return False
+    
+    def on_ship_interact(self):
+        self.running = False
+
     def run(self, dt):
         self.screen.fill('black')
 
@@ -124,6 +156,21 @@ class Level: #Level é um cenário genérico, acho que é tipo o screen que o Ed
         # --- Draw Phase ---
         self.draw_world()
         self.draw_sprites()
+        self.draw_ship()
+
+        keys = pygame.key.get_pressed()
+
+        if self.check_ship_interaction():
+            self.running = False
+
+        '''
+        if not self.entering_ship and self.check_ship_interaction():
+            if keys[pygame.K_RETURN]:
+                self.entering_ship = True
+                transition = TransitionScreen(self.screen, "Entrando na nave...", duration=2)
+                transition.run()
+                return self.on_ship_interact()
+        '''
         
     def generate_debug_map(self):
         self.planet.generate_debug_map()

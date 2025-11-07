@@ -4,6 +4,10 @@ Carlos, semana 19/10:
     Fazer um sistema de chunks carregados com base na câmera para permitir mundos grandes/infinitos com menos custo de memória
     Fazer um personagem que anda pela superfície do planeta
     Fazer a câmera que segue o personagem
+    semana 26/10
+    Aprimoramento dos planetas, player e código geral
+    semana 07/11
+    Mudança da geração dos planetas para simplex, templates de planeta, planeta de lava e Terra
     
 
 Dudu, em 24/10:

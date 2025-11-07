@@ -29,13 +29,15 @@ class Game:
                 
                 # Handle zoom events
                 if event.type == pygame.MOUSEWHEEL:
-                    self.level.camera.handle_zoom(event)
+                    #self.level.camera.handle_zoom(event)
+                    pass
                 
                 # Handle debug map generation
                 if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_m:
                         print("Generating debug map...")
-                        self.level.generate_debug_map()
+                        pass
+                        #self.level.generate_debug_map()
 
             # Logic & Drawing
             dt = self.clock.tick(FPS) / 1000

@@ -1,9 +1,12 @@
-A primeira prioridade, pra mim (Dudu), é decidir a questão do zoom que citei ali embaixo
-    E depois dar a organizada no input
+Dudu planeja fazer:
+    Atualizar o grafo de dependências e limpar a estrutura de imports
 
-Incrementar a tela do espaço
-    Com uma imagem de nave no lugar do quadradinho vermelho...
-    Presumo que João esteja interessado em fazer isso
+    Reimplementar telas de game over e transição
+
+    Reorganizar o input
+
+Dudu espera que Carlos faça:
+    Integrar as mudanças dele na geração de mapa ao que temos
 
 Fazer o básico da interação quando você está na superfície do planeta
     Isso envolve tomar algumas decisões sobre o esquema de controles

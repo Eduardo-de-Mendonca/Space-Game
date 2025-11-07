@@ -5,9 +5,6 @@ Dudu planeja fazer:
 
     Reorganizar o input
 
-Dudu espera que Carlos faça:
-    Integrar as mudanças dele na geração de mapa ao que temos
-
 Fazer o básico da interação quando você está na superfície do planeta
     Isso envolve tomar algumas decisões sobre o esquema de controles
         Recorte de minha (Dudu) ideia sobre o esquema de controles
@@ -48,9 +45,3 @@ Coisas a polir:
         Do jeito que está, quando adicionei a tela do espaço, o zoom parou de funcionar na superfície do planeta. É claro! handle_zoom é chamado na câmera do espaço, e não na câmera da superfície. Isso é uma consequência da forma complicada em que o input de zoom é lido atualmente
 
     Geração de mapa:
-        Imagino que Carlos vá ajustar estas coisas...
-        O mapa é uma coluna verde seguida de um monte de água
-        Além disso, quando você dá zoom, enquanto a câmera se mexe, aparecem várias retas pretas horizontais e verticais em diferentes posições
-
-    Fazer a câmera já começar na posição do personagem, em vez de começar no meio do nada e fazer um movimento rapidão
-        Só adicionar uns parâmetros de posição no init. Bem tranquilo

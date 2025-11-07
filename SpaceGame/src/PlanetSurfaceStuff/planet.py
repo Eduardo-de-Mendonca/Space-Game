@@ -2,7 +2,7 @@ import noise
 from src.Config.settings import *
 import random
 import src.Config.settings
-from src.Config.planet_templates import PlanetTemplate, EARTH_PLANET, colors
+from src.Config.planet_templates import *
 
 class Planet:
     """
@@ -53,36 +53,49 @@ class Planet:
         val = (val +1)/2
         return val
 
+    def get_object_noise(self, world_x, world_y):
+        noise_scale = 10.0 # Pequeno, para ser "pontilhado"
+        val = noise.snoise2(
+            world_x / noise_scale, 
+            world_y / noise_scale, 
+            octaves=1, 
+            base=self.seed + 2 # Seed diferente!
+        )
+        val = (val +1)/2 # 0.0 to 1.0
+        return val
+
     def generate_chunk_data(self, chunk_x, chunk_y):
         """
-        Generates the tile data for a single chunk.
-        This is the new core of your world generation.
+        Atualizada. Agora o chunk consiste de duas camadas: Terreno e Objeto
         """
-        chunk_data = []
+        terrain_data = []
+        object_data = []
+
         for local_y in range(CHUNK_SIZE):
-            row = []
+            terrain_row = []
+            object_row = []
             for local_x in range(CHUNK_SIZE):
                 
                 # Calculate the tile's position in the entire world
                 world_x = (chunk_x * CHUNK_SIZE) + local_x
                 world_y = (chunk_y * CHUNK_SIZE) + local_y
 
-                # --- Multi-Layer Noise Logic ---
+                #Usa Domain-Warping para gerar terreno mais realista e distorcido
                 q_x = noise.snoise2(world_x / 100, world_y / 100)
                 q_y = noise.snoise2(world_x / 100 + 5.2, world_y / 100 + 1.3)
-                # 1. Get Continental Noise
+
+                # Get Terrain Noise
                 continental_val = self.get_continental_noise(world_x + (q_x*75), world_y + (q_y*75))
                 elevation_val = self.get_elevation_noise(world_x + (q_x*5), world_y + (q_y*5))
 
-                pc,pe = self.template.continental_noise.weight, self.template.elevation_noise.weight
-
-                final_elevation_val = continental_val*pc + elevation_val*pe
+                pc,pe = self.template.continental_noise.weight, self.template.elevation_noise.weight #Pesos do template
+                final_elevation_val = continental_val*pc + elevation_val*pe #Cálculo dos pesos
 
                 tile_type = self.template.tile_map.deep_water # Default
                 
-                thresholds = self.template.thresholds
+                thresholds = self.template.thresholds #Thresholds
 
-                # 2. Decide Land or Water
+                # Decide Terrain tiles
                 if final_elevation_val < thresholds.deep_water:
                     tile_type = self.template.tile_map.deep_water
                 elif final_elevation_val < thresholds.water:
@@ -99,15 +112,32 @@ class Planet:
                     else:
                         tile_type = self.template.tile_map.snow
                 
-                row.append(tile_type)
-            chunk_data.append(row)
+                terrain_row.append(tile_type)
+
+                # Agora gerar e decidir a camada de objetos
+
+                object_type = ObjectType.NONE
+
+                object_noise_val = self.get_object_noise(world_x, world_y)
+
+                if TILE_PROPERTIES[tile_type]["walkable"]:
+                    if tile_type == TileType.GRASS:
+                        if object_noise_val > 0.8: # "20% de chance" determinístico
+                            object_type = ObjectType.TREE
+
+                object_row.append(object_type)
+
+            terrain_data.append(terrain_row)
+            object_data.append(object_row)
         
+        chunk_data = [terrain_data, object_data]
         return chunk_data
 
     def generate_debug_map(self):
         """
         Generates a 1-pixel-per-tile map of the *entire* finite world.
         This is your "bird's-eye view" for debugging.
+        (Atualizado para desenhar objetos também)
         """
         print("Generating debug map (this may take a moment)...")
         world_width_tiles = WORLD_SIZE_IN_CHUNKS[0] * CHUNK_SIZE
@@ -118,20 +148,30 @@ class Planet:
         
         for cx in range(WORLD_SIZE_IN_CHUNKS[0]):
             for cy in range(WORLD_SIZE_IN_CHUNKS[1]):
-                chunk_data = self.generate_chunk_data(cx, cy)
-                for local_y, row in enumerate(chunk_data):
-                    for local_x, tile_type in enumerate(row):
+                
+                # Agora retorna duas camadas
+                terrain_data, object_data = self.generate_chunk_data(cx, cy)
+                
+                for local_y in range(CHUNK_SIZE):
+                    for local_x in range(CHUNK_SIZE):
                         
                         world_x = (cx * CHUNK_SIZE) + local_x
                         world_y = (cy * CHUNK_SIZE) + local_y
                         
+                        # Camada 1: Terreno
+                        tile_type = terrain_data[local_y][local_x]
                         color = colors.TILE_COLOR_MAP.get(tile_type, colors.black)
                         map_surface.set_at((world_x, world_y), color)
+                        
+                        # Camada 2: Objeto (com fallback de cor)
+                        object_type = object_data[local_y][local_x]
+                        if object_type != ObjectType.NONE:
+                            obj_color = colors.OBJECT_COLOR_MAP.get(object_type)
+                            if obj_color:
+                                map_surface.set_at((world_x, world_y), obj_color)
         
         try:
             pygame.image.save(map_surface, f"debug_map_{self.seed}_{self.template.name}.png")
             print("Successfully saved debug_map.png to your project folder.")
         except Exception as e:
             print(f"Error saving debug map: {e}")
-
-

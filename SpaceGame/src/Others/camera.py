@@ -5,7 +5,7 @@ class Camera:
         # Offset is the camera's top-left corner in *world* pixel coordinates
         self.offset = pygame.math.Vector2(0, 0)
         
-        self.zoom = 0.25
+        self.zoom = 2.5
         self.min_zoom = 0.25
         self.max_zoom = 4.0
         self.zoom_speed = 0.05

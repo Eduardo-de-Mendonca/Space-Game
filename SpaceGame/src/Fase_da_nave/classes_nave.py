@@ -3,6 +3,7 @@ import random
 import pygame
 
 from src.Others.camera import *
+from src.Config.planet_templates import *
 
 class Player:
     def __init__(self, x, y):

@@ -1,9 +1,19 @@
 
 from src.PlanetSurfaceStuff.player import *
 from src.Others.camera import Camera
+from src.Config.planet_templates import *
 from src.Config.save_data import *
 #from transition import TransitionScreen
 import random
+
+class Chunk:
+    def __init__(self, cx, cy, terrain_data, object_data):
+        self.cx = cx
+        self.cy = cy
+        self.terrain_data = terrain_data
+        self.object_data = object_data
+        # Futuramente: self.is_modified = False
+
 
 class Level: #Level é um cenário genérico, acho que é tipo o screen que o Edu usava
     '''
@@ -42,6 +52,36 @@ class Level: #Level é um cenário genérico, acho que é tipo o screen que o Ed
 
         self.running = True
 
+        self.debug_grid_mode = True # Começa ligado para você ver
+
+
+        # NOVO: O "Delta File" / "Arquivo TXT"
+        # Chave: (world_x, world_y), Valor: new_object_id
+        # Isso armazena TODAS as mudanças feitas pelo jogador
+        self.world_changes = {} 
+        # Ex: self.world_changes[(100, 150)] = ObjectType.NONE # Árvore quebrou
+
+        # NOVO: Carregador de Assets
+        self.object_assets = {} # Dicionário para guardar os sprites
+        self.load_object_assets()
+
+
+    def load_object_assets(self):
+        print("Loading object assets...")
+        for obj_type, props in OBJECT_PROPERTIES.items():
+            if props['sprite_path']:
+                try:
+                    # CORREÇÃO 1: .convert_alpha() é crucial para transparência
+                    sprite = pygame.image.load(props['sprite_path']).convert_alpha()
+                    
+                    # CORREÇÃO 2: NÃO escalar a imagem aqui. Carrega na resolução total.
+                    # Apenas guarde o sprite original.
+                    self.object_assets[obj_type] = sprite
+                    print(f"Loaded asset: {props['sprite_path']}")
+                except Exception as e:
+                    print(f"ERROR: Could not load asset {props['sprite_path']}. Using fallback. {e}")
+                    self.object_assets[obj_type] = None # Usará a cor de fallback
+
     def manage_chunks(self):
         """
         Loads new chunks that enter the camera's view and unloads old ones.
@@ -49,7 +89,6 @@ class Level: #Level é um cenário genérico, acho que é tipo o screen que o Ed
         visible_chunks_x, visible_chunks_y = self.camera.get_visible_chunk_coords()
         
         # --- Load new chunks ---
-        chunks_to_load = set()
         for cx in visible_chunks_x:
             for cy in visible_chunks_y:
                 # Check if chunk is within finite world bounds
@@ -58,8 +97,21 @@ class Level: #Level é um cenário genérico, acho que é tipo o screen que o Ed
                     
                 chunk_coord = (cx, cy)
                 if chunk_coord not in self.loaded_chunks:
-                    # Not loaded yet, so generate it and add to dictionary
-                    self.loaded_chunks[chunk_coord] = self.planet.generate_chunk_data(cx, cy)
+                    # 1. Gera o chunk "base" a partir do seed
+                    terrain_data, object_data = self.planet.generate_chunk_data(cx, cy)
+                    
+                    # 2. Aplica o "Delta" (nossas mudanças salvas)
+                    for local_y in range(CHUNK_SIZE):
+                        for local_x in range(CHUNK_SIZE):
+                            world_x = (cx * CHUNK_SIZE) + local_x
+                            world_y = (cy * CHUNK_SIZE) + local_y
+                            if (world_x, world_y) in self.world_changes:
+                                # Sobrescreve o objeto gerado com nossa mudança
+                                object_data[local_y][local_x] = self.world_changes[(world_x, world_y)]
+
+                    # 3. Cria o objeto Chunk e armazena
+                    new_chunk = Chunk(cx, cy, terrain_data, object_data)
+                    self.loaded_chunks[chunk_coord] = new_chunk
 
         # --- Unload old chunks ---
         chunks_to_unload = set()
@@ -71,48 +123,74 @@ class Level: #Level é um cenário genérico, acho que é tipo o screen que o Ed
         for chunk_coord in chunks_to_unload:
             del self.loaded_chunks[chunk_coord]
 
-    def draw_world(self):
+        # ATUALIZADO: draw_layers com Grid Mode
+    def draw_layers(self):
         """
-        Draws only the visible tiles from the loaded chunks.
+        Draws all layers: terrain first, then objects on top.
         """
+        # CORREÇÃO DE ESCALA: TILE_SIZE agora deve ser 16 ou 32 no seu settings.py
         zoomed_tile_size = floor(TILE_SIZE * self.camera.zoom)
-        if zoomed_tile_size <= 0: return # Don't draw if tiles are invisible
+        if zoomed_tile_size <= 0: return 
         
-        for chunk_coord, chunk_data in self.loaded_chunks.items():
-            chunk_x, chunk_y = chunk_coord
-            
-            for local_y, row in enumerate(chunk_data):
+        # --- PASS 1: Desenha o TERRENO ---
+        for chunk_coord, chunk in self.loaded_chunks.items():
+            for local_y, row in enumerate(chunk.terrain_data):
                 for local_x, tile_type in enumerate(row):
                     
-                    # Get tile's world pixel position
-                    world_x = (chunk_x * CHUNK_SIZE + local_x) * TILE_SIZE
-                    world_y = (chunk_y * CHUNK_SIZE + local_y) * TILE_SIZE
-                    
-                    # Convert to screen position using the camera
+                    world_x = (chunk.cx * CHUNK_SIZE + local_x) * TILE_SIZE
+                    world_y = (chunk.cy * CHUNK_SIZE + local_y) * TILE_SIZE
                     screen_pos = self.camera.world_to_screen(pygame.math.Vector2(world_x, world_y))
                     
-                    # Create the zoomed rect
                     rect = pygame.Rect(
-                        floor(screen_pos.x),
-                        floor(screen_pos.y),
-                        zoomed_tile_size,
-                        zoomed_tile_size
+                        floor(screen_pos.x), floor(screen_pos.y),
+                        zoomed_tile_size, zoomed_tile_size
                     )
                     
-                    # Draw the tile
                     color = colors.TILE_COLOR_MAP.get(tile_type, colors.black)
                     pygame.draw.rect(self.screen, color, rect)
 
+                    # NOVO: Desenha o Grid de Debug
+                    if self.debug_grid_mode and zoomed_tile_size > 4: # Só desenha se for visível
+                        pygame.draw.rect(self.screen, colors.black, rect, 1) # '1' = contorno
+
+        # --- PASS 2: Desenha os OBJETOS (Sprites ou Fallback) ---
+        for chunk_coord, chunk in self.loaded_chunks.items():
+            for local_y, row in enumerate(chunk.object_data):
+                for local_x, object_type in enumerate(row):
+                    
+                    if object_type != ObjectType.NONE:
+                        world_x = (chunk.cx * CHUNK_SIZE + local_x) * TILE_SIZE
+                        world_y = (chunk.cy * CHUNK_SIZE + local_y) * TILE_SIZE
+                        screen_pos = self.camera.world_to_screen(pygame.math.Vector2(world_x, world_y))
+                        
+                        rect = pygame.Rect(
+                            floor(screen_pos.x), floor(screen_pos.y),
+                            zoomed_tile_size, zoomed_tile_size
+                        )
+
+                        sprite = self.object_assets.get(object_type)
+                        if sprite:
+                            # CORREÇÃO 2: Escala o sprite original (full-res)
+                            # para o tamanho de zoom final. Muito mais qualidade!
+                            zoomed_sprite = pygame.transform.scale(sprite, (zoomed_tile_size, zoomed_tile_size))
+                            self.screen.blit(zoomed_sprite, rect.topleft)
+                        else:
+                            color = colors.OBJECT_COLOR_MAP.get(object_type, colors.black)
+                            pygame.draw.rect(self.screen, color, rect)
+                        
+                        # NOVO: Desenha o Grid de Debug por CIMA dos objetos também
+                        if self.debug_grid_mode and zoomed_tile_size > 4:
+                            pygame.draw.rect(self.screen, colors.black, rect, 1)
+
+
     def draw_sprites(self):
         """
-        Draws all sprites, correctly offset by the camera.
+        Draws all sprites (PLAYER, etc), correctly offset by the camera.
         """
         for sprite in self.all_sprites:
-            # Get sprite's world rect
             world_rect = sprite.rect
             assert isinstance(world_rect, pygame.Rect)
             
-            # Convert to screen rect
             screen_pos = self.camera.world_to_screen(world_rect.topleft)
             zoomed_width = floor(world_rect.width * self.camera.zoom)
             zoomed_height = floor(world_rect.height * self.camera.zoom)
@@ -124,7 +202,6 @@ class Level: #Level é um cenário genérico, acho que é tipo o screen que o Ed
                 zoomed_height
             )
             
-            # Scale the image if needed (can be slow, better to pre-scale)
             scaled_image = pygame.transform.scale(sprite.image, (zoomed_width, zoomed_height))
             self.screen.blit(scaled_image, screen_rect)
 
@@ -154,7 +231,7 @@ class Level: #Level é um cenário genérico, acho que é tipo o screen que o Ed
         self.manage_chunks()
         
         # --- Draw Phase ---
-        self.draw_world()
+        self.draw_layers() 
         self.draw_sprites()
         self.draw_ship()
 

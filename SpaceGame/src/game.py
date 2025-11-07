@@ -34,10 +34,13 @@ class Game:
                 
                 # Handle debug map generation
                 if event.type == pygame.KEYDOWN:
-                    if event.key == pygame.K_m:
+                    if event.key == pygame.K_m and self.level.sublevel:
                         print("Generating debug map...")
-                        pass
-                        #self.level.generate_debug_map()
+                        self.level.sublevel.generate_debug_map()
+                
+                    if event.key == pygame.K_g and self.level.sublevel: # Tecla 'G' para Grid
+                        self.level.sublevel.debug_grid_mode = not self.level.sublevel.debug_grid_mode
+                        print(f"Debug Grid Mode: {self.level.sublevel.debug_grid_mode}")
 
             # Logic & Drawing
             dt = self.clock.tick(FPS) / 1000

@@ -15,6 +15,52 @@ class TileType(IntEnum):
     ASH = 8
     OBSIDIAN = 9
 
+class ObjectType(IntEnum):
+    NONE = 0  # Tile vazio, transparente
+    TREE = 1
+    ROCK = 2
+    IRON_ORE = 3
+
+TILE_PROPERTIES = {
+    TileType.DEEP_WATER: {'walkable': False},
+    TileType.WATER: {'walkable': False},
+    TileType.SAND: {'walkable': True},
+    TileType.GRASS: {'walkable': True},
+    TileType.FOREST: {'walkable': True}, # A "floresta" é o chão
+    TileType.ROCK: {'walkable': True},   # A "pedra" é o chão
+    TileType.SNOW: {'walkable': True},
+    TileType.LAVA: {'walkable': False},
+    TileType.ASH: {'walkable': True},
+    TileType.OBSIDIAN: {'walkable': True},
+}
+
+OBJECT_PROPERTIES = {
+    ObjectType.NONE: {
+        'walkable': True, 
+        'resource': None, 
+        'sprite_path': None, 
+        'fallback_color': None
+    },
+    ObjectType.TREE: {
+        'walkable': False, 
+        'resource': 'wood', 
+        'sprite_path': 'src/assets/tree.png', # Assumindo que você tem essa pasta
+        'fallback_color': (0, 102, 0) # Verde escuro
+    },
+    ObjectType.ROCK: {
+        'walkable': False, 
+        'resource': 'stone', 
+        'sprite_path': 'assets/rock.png', 
+        'fallback_color': (160, 160, 160) # Cinza
+    },
+    ObjectType.IRON_ORE: {
+        'walkable': False, 
+        'resource': 'iron', 
+        'sprite_path': 'assets/iron_ore.png', 
+        'fallback_color': (200, 100, 100) # "Ferrugem"
+    },
+}
+
 class colors:
     black = pygame.Color(0, 0, 0)
     dark_blue = pygame.Color(0, 0, 153)
@@ -39,6 +85,12 @@ class colors:
         TileType.LAVA: red,
         TileType.ASH: gray,
         TileType.OBSIDIAN: black
+    }
+
+    OBJECT_COLOR_MAP = {
+        obj_type: props['fallback_color'] 
+        for obj_type, props in OBJECT_PROPERTIES.items() 
+        if props['fallback_color']
     }
 
 # --- DATA STRUCTURE DEFINITIONS ---

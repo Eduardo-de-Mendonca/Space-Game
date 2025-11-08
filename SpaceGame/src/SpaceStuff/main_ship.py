@@ -14,14 +14,12 @@ class AsteroidsGame:
         assert isinstance(save_data, SaveData)
 
         self.screen = screen
-        self.player = Player(ASTEROID_GAME_WIDTH//2, ASTEROID_GAME_HEIGHT//2)
+        self.player = Player(SCREEN_WIDTH//2, SCREEN_HEIGHT//2)
         self.camera = CameraWithoutZoom()
         self.bullets = []
-        self.wave = 1
-        self.score = 0
         self.lives = 3
         self.font = pygame.font.SysFont("arial", 24)
-        self.asteroids = self.spawn_wave(self.wave)
+        self.asteroids = self.spawn_wave()
         self.game_over = False
 
         self.input_handler = input_handler
@@ -30,15 +28,15 @@ class AsteroidsGame:
 
         self.sublevel = None
 
-    def spawn_wave(self, wave):
+    def spawn_wave(self):
         new_asteroids = []
-        for _ in range(2 + wave):
+        for _ in range(ASTEROIDS_SPAWNED_PER_WAVE):
             # Spawna em torno do jogador, e não a partir da coordenada 0, agora que há câmera
             cpos = self.camera.get_offset()
             cx = int(cpos[0])
             cy = int(cpos[1])
-            w = ASTEROID_GAME_WIDTH
-            h = ASTEROID_GAME_HEIGHT
+            w = SCREEN_WIDTH
+            h = SCREEN_HEIGHT
 
             x = random.randint(cx, cx + w)
             y = random.randint(cy, cy + h)
@@ -75,7 +73,7 @@ class AsteroidsGame:
         # Atualiza bullets
         for b in self.bullets[:]:
             assert isinstance(b, Bullet)
-            b.update(ASTEROID_GAME_WIDTH, ASTEROID_GAME_HEIGHT)
+            b.update(SCREEN_WIDTH, SCREEN_HEIGHT)
 
             if b.lifetime <= 0:
                 self.bullets.remove(b)
@@ -83,13 +81,13 @@ class AsteroidsGame:
         # Atualiza asteroides
         for a in self.asteroids:
             assert isinstance(a, Asteroid)
-            a.update(ASTEROID_GAME_WIDTH, ASTEROID_GAME_HEIGHT)
+            a.update(SCREEN_WIDTH, SCREEN_HEIGHT)
 
             cpos = self.camera.get_offset()
             cx = cpos[0]
             cy = cpos[1]
-            w = ASTEROID_GAME_WIDTH
-            h = ASTEROID_GAME_HEIGHT
+            w = SCREEN_WIDTH
+            h = SCREEN_HEIGHT
 
             if a.x < cx - a.size or cx + w + a.size < a.x:
                 self.asteroids.remove(a)
@@ -106,14 +104,35 @@ class AsteroidsGame:
                     self.asteroids.remove(a)
                     fragments = a.split()
                     self.asteroids.extend(fragments)
-                    if a.size > 20: self.score += 20
-                    elif a.size > 10: self.score += 50
-                    else: self.score += 100
                     break
 
         if len(self.asteroids) == 0:
-            self.wave += 1
-            self.asteroids = self.spawn_wave(self.wave)
+            self.asteroids = self.spawn_wave()
+
+    def check_all_collisons(self):
+        # Colisão jogador × asteroides
+        for a in self.asteroids:
+            assert isinstance(a, Asteroid)
+            if self.check_collision(a.x, a.y, self.player.x, self.player.y, a.size+10) and self.player.asteroid_iframes == 0:
+                self.lives -= 1
+
+                # Em vez de resetar a posição do jogador, vamos dar frames de invulnerabilidade
+                self.player.asteroid_iframes = MAX_ASTEROID_IFRAMES
+
+                '''self.player.x = SCREEN_WIDTH//2
+                self.player.y = SCREEN_HEIGHT//2
+                self.player.vel_x = 0
+                self.player.vel_y = 0'''
+                if self.lives <= 0:
+                    self.game_over = True
+
+        # Colisão jogador x planetas
+        collided_planet_index = self.check_planet_collisions()
+        if collided_planet_index != None and self.player.planet_iframes == 0:
+            destination_id = 0
+            self.player.planet_iframes = MAX_PLANET_IFRAMES
+
+            self.sublevel = Level(self.screen, self.input_handler, self.save_data, self.save_data.all_planets[destination_id])
 
     def run(self, dt):
         if self.sublevel != None:
@@ -121,8 +140,6 @@ class AsteroidsGame:
             assert isinstance(self.sublevel, Level)
             if not(self.sublevel.running):
                 self.sublevel = None
-                self.player.x = 0
-                self.player.y = 0
             else:
                 self.sublevel.run(dt)
                 return
@@ -132,7 +149,7 @@ class AsteroidsGame:
         keys = input.pressing
 
         # Movimenta o jogador
-        self.player.update(keys, ASTEROID_GAME_WIDTH, ASTEROID_GAME_HEIGHT)
+        self.player.update(keys)
 
         # Dá tiro
         if input.just_pressed[pygame.K_SPACE]:
@@ -145,24 +162,7 @@ class AsteroidsGame:
         # Atualiza as balas e asteroides
         self.update_bullets_asteroids()
 
-        # Colisão jogador × asteroides
-        for a in self.asteroids:
-            assert isinstance(a, Asteroid)
-            if self.check_collision(a.x, a.y, self.player.x, self.player.y, a.size+10):
-                self.lives -= 1
-                self.player.x = ASTEROID_GAME_WIDTH//2
-                self.player.y = ASTEROID_GAME_HEIGHT//2
-                self.player.vel_x = 0
-                self.player.vel_y = 0
-                if self.lives <= 0:
-                    self.game_over = True
-
-        # Colisão jogador x planetas
-        collided_planet_index = self.check_planet_collisions()
-        if collided_planet_index != None:
-            destination_id = 0
-
-            self.sublevel = Level(self.screen, self.input_handler, self.save_data, self.save_data.all_planets[destination_id])
+        self.check_all_collisons()
 
         # Desenho
         self.screen.fill((0,0,0))
@@ -177,11 +177,7 @@ class AsteroidsGame:
         for p in self.planets:
             p.draw(self.screen, self.camera)
 
-        hud_score = self.font.render(f"SCORE: {self.score}", True, (255,255,255))
-        hud_lives = self.font.render(f"LIVES: {self.lives}", True, (255,255,255))
-        hud_wave = self.font.render(f"WAVE: {self.wave}", True, (255,255,255))
-        self.screen.blit(hud_wave, (10,70))
-        self.screen.blit(hud_score, (10,10))
+        hud_lives = self.font.render(f"VIDAS: {self.lives}", True, (255,255,255))
         self.screen.blit(hud_lives, (10,40))
         
     '''

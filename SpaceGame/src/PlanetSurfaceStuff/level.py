@@ -55,7 +55,7 @@ class Level:
 
         self.running = True
 
-        self.debug_grid_mode = True # Começa ligado para você ver
+        self.debug_grid_mode = DEBUG_GRID_MODE_START # Começa ligado para você ver
 
 
         # NOVO: O "Delta File" / "Arquivo TXT"

@@ -18,13 +18,17 @@ class Player:
         self.acc = 0.2
         self.drag = 0.99
 
+        # Frames de invulnerabilidade a colisão
+        self.planet_iframes = 0
+        self.asteroid_iframes = 0
+
         # 🔹 Carrega e ajusta a imagem da nave
         self.image_original = pygame.image.load("src/Assets/nave.png").convert_alpha()
         self.image_original = pygame.transform.scale(self.image_original, (60, 60))  # ajuste de tamanho
         self.image = self.image_original # imagem que será desenhada
         self.rect = self.image_original.get_rect(center=(self.x, self.y)) 
 
-    def update(self, keys, width, height):
+    def update(self, keys):
         # Rotação
         if keys[pygame.K_a]:
             self.angle -= 4
@@ -44,13 +48,9 @@ class Player:
         self.vel_x *= self.drag
         self.vel_y *= self.drag
 
-        # Wrap-around (teleporta para o outro lado da tela): removido, porque agora há câmera
-        '''
-        if self.x < 0: self.x = width
-        if self.x > width: self.x = 0
-        if self.y < 0: self.y = height
-        if self.y > height: self.y = 0
-        '''
+        # Atualiza frames de invulnerabilidade
+        if self.asteroid_iframes > 0: self.asteroid_iframes -= 1
+        if self.planet_iframes > 0: self.planet_iframes -= 1
 
     def draw(self, screen, camera, keys=None):
         assert isinstance(screen, pygame.Surface)
@@ -125,8 +125,8 @@ class Bullet:
         self.x = x
         self.y = y
         self.angle = angle
-        self.speed = 8
-        self.lifetime = 60  # frames (~1 segundo a 60 FPS)
+        self.speed = BULLET_SPEED
+        self.lifetime = BULLET_LIFETIME  # frames (~1 segundo a 60 FPS)
 
     def update(self, width, height):
         self.x += math.cos(math.radians(self.angle)) * self.speed

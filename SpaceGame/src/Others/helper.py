@@ -1,4 +1,6 @@
 import math
+import pygame
+from src.Config.planet_templates import colors
 
 def map_value_to_range(value, old_min, old_max, new_min, new_max):
     """
@@ -27,3 +29,10 @@ def map_value_to_range(value, old_min, old_max, new_min, new_max):
     # Map the 0-1 ratio to the new range
     mapped_value = new_min + (value_scaled * new_span)
     return mapped_value
+
+def draw_text(screen, text, x, y):
+    assert isinstance(screen, pygame.Surface)
+
+    font = pygame.font.SysFont('Arial', 30)
+    image = font.render(text, True, colors.white)
+    screen.blit(image, (x, y))

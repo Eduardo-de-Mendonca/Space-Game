@@ -2,6 +2,8 @@
 from src.SpaceStuff.main_ship import *
 from src.Others.input import InputHandler
 
+from src.Others.helper import draw_text
+
 # import temporário
 from src.Config.save_data import *
 
@@ -40,7 +42,10 @@ class Game:
             # Logic & Drawing
             dt = self.clock.tick(FPS) / 1000
             self.level.run(dt)
-            
+
+            # Desenhar o FPS para debug
+            if DEBUG_SHOW_FPS: draw_text(self.screen, str(int(self.clock.get_fps())), 0, 0)
+
             # Final Flip
             pygame.display.update()
 

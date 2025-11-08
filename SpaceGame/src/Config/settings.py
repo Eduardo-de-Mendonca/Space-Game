@@ -30,6 +30,12 @@ LOAD_RADIUS_CHUNKS = 1
 
 # -- Agora as settings do espaço
 PLANET_IN_SPACE_RADIUS = 100
+BULLET_SPEED = 8
+BULLET_LIFETIME = 120 # 120 frames, ou seja, 2 segundos
+ASTEROIDS_SPAWNED_PER_WAVE = 8
+MAX_PLANET_IFRAMES = 180
+MAX_ASTEROID_IFRAMES = 180
 
-ASTEROID_GAME_WIDTH = SCREEN_WIDTH
-ASTEROID_GAME_HEIGHT = SCREEN_HEIGHT
+# Settings de debug
+DEBUG_SHOW_FPS = True
+DEBUG_GRID_MODE_START = False # Começa sem mostrar o grid. Podemos mudar isso ao longo do desenvolvimento à vontade, conforme quisermos

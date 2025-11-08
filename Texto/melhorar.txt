@@ -1,24 +1,13 @@
-
+Superfície do planeta:
+    Enquanto mexe, o quadrado dá uma trepidada esquisita
+        Especialmente na diagonal. Deve ter a ver com algum tipo de arredondamento que é feito em algum momento. É bom resolver isso.
 
 HUB do espaço:
-    Quando o jogador toma dano, ele é teleportado de volta para a posição inicial. Mas acho que seria mais legal ele ficar onde está, porém temporariamente invulnerável
-
-    Vale estender um pouco o lifetime das balas
-
-    A quantidade de asteroides vai aumentando progressivamente de wave em wave
-        Porém, agora que essa tela é um HUB, isso não faz mais muito sentido.
-
-        Em geral, seria legal se os asteroides spawnassem em uma frequência constante, e spawnassem fora da tela, mas prestes a entrar. Isso envolve alterar a lógica que determina a posição na hora de spawnar, e também alterar a lógica que deleta os asteroides quando eles saem da tela
-
-    É bom retirar as constantes ASTEROID_GAME_WIDTH e ASTEROID_GAME_HEIGHT
-        Pois o jogo quebra quando não são iguais a SCREEN_WIDTH e 
-        SCREEN_HEIGHT.
-
     É bom restaurar o game over que existia
         Mas agora em uma classe GameOverScreen separada
 
-    Ao sair de um planeta, seria bom sair da posição onde o planeta estava.
-        Mas isso precisa de uma lógica para impedir o jogador de imediatamente colidir com o mesmo planeta de novo
+    Spawn de asteroides:
+        Agora, eles spawnam na tela, e somem quando saem da tela. Seria legal eles spawnarem fora, prestes a entrar, e sumirem quando ficam uma certa distância fora da tela
 
     Imagem da nave:
         A transparência dela não tava funcionando (estava ficando com um fundo quadriculado, a despeito de chamarmos convert_alpha para preservar o alpha em vez de convert). Troquei por outra imagem mais simples.

@@ -1,10 +1,3 @@
-Dudu planeja fazer:
-    Atualizar o grafo de dependências e limpar a estrutura de imports
-
-    Reimplementar telas de game over e transição
-
-    Reorganizar o input
-
 Fazer o básico da interação quando você está na superfície do planeta
     Isso envolve tomar algumas decisões sobre o esquema de controles
         Recorte de minha (Dudu) ideia sobre o esquema de controles
@@ -17,31 +10,4 @@ Fazer o básico da interação quando você está na superfície do planeta
             Se for um recurso como terra ou madeira, isso constrói
             Se for uma ferramenta como pá ou machado, isso usa a ferramenta para bater onde você clicou (ou então na frente do personagem)"
 
-    Colocar um objeto no mapa da superfície representando sua espaçonave, de forma que seja possível clicar nela e voltar para o espaço
-        E polir a lógica de colisão do espaço de forma que você não volte instantaneamente para o planeta devido à colisão
-
     Depois disso, é claro, vêm coisas mais complicadas, como inventário, inimigos e combate
-
-Coisas a polir:
-    Organizar melhor o input
-        O input é lido por diferentes objetos em diferentes lugares. E ainda tem o handle_zoom da câmera, que é chamado direto lá do Game e lê o input.
-
-        Isso é muito confuso e passível de erros. É bom ter uma classe Input que guarda todo o input para um frame, e um método que lê, o qual pode ser chamado uma vez no início de cada frame pelas telas. E aí encapsulamos para dentro dessa classe a lógica de ler o mouse scroll a partir dos eventos
-
-    Pensar sobre zoom (continuação do problema de cima):
-        zoom está adicionando algumas complicações para o projeto
-            A questão de ter que ler o input de mouse scroll nos events, que mencionei em cima
-
-            Ter que fazer contas com o zoom na hora de desenhar é chato. Não tem problema se encapsularmos toda essa lógica dentro da câmera. Mas o método draw de PlanetInSpace mostra algo um pouco difícil de encapsular (desenhando um círculo, em vez de desenhar uma imagem)
-            Existem soluções, como escrever um método circle na câmera, ou transformar tudo (incluindo formas geométricas como círculos) em imagens antes de desenhar. Mas já é uma complicação
-
-        Não acho que zoom controlável será uma feature do jogo
-            Só, talvez, dentro de um minimapa ou algo do tipo
-
-        Por isso, eu (Dudu) proponho remover o zoom. Para podermos ajustar o tamanho das coisas na tela, basta colocar, em settings, variáveis SCALE (ou outro nome parecido), e definir lá mesmo o tamanho das coisas multiplicado pelo scale. Ou seja, alteramos diretamente o tamanho das coisas, em vez de ter uma lógica de zoom por cima. E aí, isso só pode ser alterado de uma execução para outra do programa (não é dinâmico).
-
-        Possivelmente também está no zoom a raiz do problema das retas pretas no planeta (que menciono abaixo)
-
-        Do jeito que está, quando adicionei a tela do espaço, o zoom parou de funcionar na superfície do planeta. É claro! handle_zoom é chamado na câmera do espaço, e não na câmera da superfície. Isso é uma consequência da forma complicada em que o input de zoom é lido atualmente
-
-    Geração de mapa:

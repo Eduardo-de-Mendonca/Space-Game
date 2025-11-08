@@ -1,8 +1,8 @@
-#from Classes.SpaceStuff.space_level import *
-from src.SpaceStuff.main_ship import *
 from src.Others.input import InputHandler
-
 from src.Others.helper import draw_text
+
+from src.SpaceStuff.main_ship import *
+from src.GameOverStuff.game_over import GameOverScreen, game_over_states
 
 # import temporário
 from src.Config.save_data import *
@@ -16,12 +16,11 @@ class Game:
         self.clock = pygame.time.Clock()
 
         self.running = True
-        # self.state = "Test" - não acho que precisamos de uma máquina de estados aqui. A lógica de subtelas deve resolver isso.
 
         self.input_handler = InputHandler()
 
         self.save_data = SaveData()
-        #self.level = SpaceLevel(self.screen, self.save_data) # Agora o level começa na tela do espaço! Ela que instancia os Levels de superfície quando necessário
+
         self.level = AsteroidsGame(self.screen, self.input_handler, self.save_data)
 
     def run(self):
@@ -41,7 +40,18 @@ class Game:
 
             # Logic & Drawing
             dt = self.clock.tick(FPS) / 1000
+
             self.level.run(dt)
+
+            # Gerenciar game over
+            if isinstance(self.level, AsteroidsGame):
+                if self.level.state == asteroids_game_states.GAME_OVER:
+                    self.level = GameOverScreen(self.screen, self.input_handler)
+            elif isinstance(self.level, GameOverScreen):
+                if self.level.state == game_over_states.RESTART:
+                    self.level = AsteroidsGame(self.screen, self.input_handler, self.save_data)
+                elif self.level.state == game_over_states.QUIT:
+                    self.running = False
 
             # Desenhar o FPS para debug
             if DEBUG_SHOW_FPS: draw_text(self.screen, str(int(self.clock.get_fps())), 0, 0)

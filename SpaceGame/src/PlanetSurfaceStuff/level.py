@@ -35,7 +35,7 @@ class Level:
 
         # Nave
         self.entering_ship = False
-        self.ship_pos = pygame.Vector2(868, 775) #Para teste deixei uma posição fixa
+        self.ship_pos = pygame.Vector2(200, 200) #Para teste deixei uma posição fixa
 
         #Caso queira uma posição aletória opção abaixo
         #self.ship_pos = (random.randint(0, WORLD_SIZE_IN_CHUNKS[0] * CHUNK_SIZE - 1), 

@@ -15,7 +15,7 @@ Altura 1:
 
 Altura 2:
     src.Config.save_data
-
+    src.GameOverStuff.game_over
     src.SpaceStuff.classes_ship
 
 Altura 3:

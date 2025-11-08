@@ -20,7 +20,7 @@ class AsteroidsGame:
         self.lives = 3
         self.font = pygame.font.SysFont("arial", 24)
         self.asteroids = self.spawn_wave()
-        self.game_over = False
+        self.state = asteroids_game_states.RUNNING
 
         self.input_handler = input_handler
         self.save_data = save_data
@@ -119,12 +119,8 @@ class AsteroidsGame:
                 # Em vez de resetar a posição do jogador, vamos dar frames de invulnerabilidade
                 self.player.asteroid_iframes = MAX_ASTEROID_IFRAMES
 
-                '''self.player.x = SCREEN_WIDTH//2
-                self.player.y = SCREEN_HEIGHT//2
-                self.player.vel_x = 0
-                self.player.vel_y = 0'''
                 if self.lives <= 0:
-                    self.game_over = True
+                    self.state = asteroids_game_states.GAME_OVER
 
         # Colisão jogador x planetas
         collided_planet_index = self.check_planet_collisions()

@@ -7,6 +7,10 @@ from src.Config.settings import *
 
 from src.Others.camera import CameraWithoutZoom
 
+class asteroids_game_states:
+    'O state será lido pela tela-pai para determinar o que fazer quando deixarmos de estar running'
+    RUNNING = 0
+    GAME_OVER = 1
 
 class Player:
     def __init__(self, x, y):

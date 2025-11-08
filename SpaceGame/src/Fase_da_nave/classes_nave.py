@@ -16,20 +16,20 @@ class Player:
         self.drag = 0.99
 
         # 🔹 Carrega e ajusta a imagem da nave
-        self.image_original = pygame.image.load("Images/nave.png").convert_alpha()
+        self.image_original = pygame.image.load("src/Assets/nave.png").convert_alpha()
         self.image_original = pygame.transform.scale(self.image_original, (60, 60))  # ajuste de tamanho
         self.image = self.image_original # imagem que será desenhada
         self.rect = self.image_original.get_rect(center=(self.x, self.y)) 
 
     def update(self, keys, width, height):
         # Rotação
-        if keys[pygame.K_LEFT]:
+        if keys[pygame.K_a]:
             self.angle -= 4
-        if keys[pygame.K_RIGHT]:
+        if keys[pygame.K_d]:
             self.angle += 4
 
         # Aceleração
-        if keys[pygame.K_UP]:
+        if keys[pygame.K_w]:
             self.vel_x += math.cos(math.radians(self.angle)) * self.acc
             self.vel_y += math.sin(math.radians(self.angle)) * self.acc
 

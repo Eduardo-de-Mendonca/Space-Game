@@ -2,13 +2,15 @@ import pygame
 import math, random
 from src.Fase_da_nave.classes_nave import *
 from src.Others.camera import *
+from src.Others.input import *
 from src.Config.save_data import *
 from src.PlanetSurfaceStuff.level import Level
 from src.Config.settings import *
 
 class AsteroidsGame:
-    def __init__(self, screen, save_data):
+    def __init__(self, screen, input_handler, save_data):
         assert isinstance(screen, pygame.Surface)
+        assert isinstance(input_handler, InputHandler)
         assert isinstance(save_data, SaveData)
 
         self.screen = screen
@@ -22,6 +24,7 @@ class AsteroidsGame:
         self.asteroids = self.spawn_wave(self.wave)
         self.game_over = False
 
+        self.input_handler = input_handler
         self.save_data = save_data
         self.planets = [PlanetInSpace(pygame.math.Vector2(500, 300), save_data.all_planets[0])]
 
@@ -125,13 +128,14 @@ class AsteroidsGame:
                 return
         
         'Roda apenas um frame da tela. Não há loop infinito aqui: o loop infinito está em Game.'
-        keys = pygame.key.get_pressed()
+        input = self.input_handler.get_input()
+        keys = input.pressing
 
         # Movimenta o jogador
         self.player.update(keys, ASTEROID_GAME_WIDTH, ASTEROID_GAME_HEIGHT)
 
         # Dá tiro
-        if keys[pygame.K_SPACE]:
+        if input.just_pressed[pygame.K_SPACE]:
             bx, by, ang = self.player.shoot()
             self.bullets.append(Bullet(bx, by, ang))
 
@@ -158,7 +162,7 @@ class AsteroidsGame:
         if collided_planet_index != None:
             destination_id = 0
 
-            self.sublevel = Level(self.screen, self.save_data, self.save_data.all_planets[destination_id])
+            self.sublevel = Level(self.screen, self.input_handler, self.save_data, self.save_data.all_planets[destination_id])
 
         # Desenho
         self.screen.fill((0,0,0))

@@ -1,5 +1,6 @@
 #from Classes.SpaceStuff.space_level import *
 from src.Fase_da_nave.main_nave import *
+from src.Others.input import InputHandler
 
 # import temporário
 from src.Config.save_data import *
@@ -15,9 +16,11 @@ class Game:
         self.running = True
         # self.state = "Test" - não acho que precisamos de uma máquina de estados aqui. A lógica de subtelas deve resolver isso.
 
+        self.input_handler = InputHandler()
+
         self.save_data = SaveData()
         #self.level = SpaceLevel(self.screen, self.save_data) # Agora o level começa na tela do espaço! Ela que instancia os Levels de superfície quando necessário
-        self.level = AsteroidsGame(self.screen, self.save_data)
+        self.level = AsteroidsGame(self.screen, self.input_handler, self.save_data)
 
     def run(self):
         # The main game loop
@@ -29,18 +32,10 @@ class Game:
                 
                 # Handle zoom events
                 if event.type == pygame.MOUSEWHEEL:
-                    #self.level.camera.handle_zoom(event)
-                    pass
-                
-                # Handle debug map generation
-                if event.type == pygame.KEYDOWN:
-                    if event.key == pygame.K_m and self.level.sublevel:
-                        print("Generating debug map...")
-                        self.level.sublevel.generate_debug_map()
-                
-                    if event.key == pygame.K_g and self.level.sublevel: # Tecla 'G' para Grid
-                        self.level.sublevel.debug_grid_mode = not self.level.sublevel.debug_grid_mode
-                        print(f"Debug Grid Mode: {self.level.sublevel.debug_grid_mode}")
+                    self.input_handler.next_input.mousewheel_x = event.x
+                    self.input_handler.next_input.mousewheel_y = event.y
+
+                    # Agora, qualquer comportamento que use esse input (como handle_zoom) será chamado dentro da tela correspondente. E todas as telas têm acesso a ele.
 
             # Logic & Drawing
             dt = self.clock.tick(FPS) / 1000

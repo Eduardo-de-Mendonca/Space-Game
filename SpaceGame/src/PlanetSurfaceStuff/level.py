@@ -1,6 +1,7 @@
 
 from src.PlanetSurfaceStuff.player import *
 from src.Others.camera import Camera
+from src.Others.input import InputHandler
 from src.Config.planet_templates import *
 from src.Config.save_data import *
 #from transition import TransitionScreen
@@ -14,17 +15,18 @@ class Chunk:
         self.object_data = object_data
         # Futuramente: self.is_modified = False
 
-
-class Level: #Level é um cenário genérico, acho que é tipo o screen que o Edu usava
+class Level:
     '''
     Um objeto Level representa a tela quando você está na superfície de um planeta
     '''
-    def __init__(self, screen, save_data, planet):
+    def __init__(self, screen, input_handler, save_data, planet):
         assert isinstance(screen, pygame.Surface)
+        assert isinstance(input_handler, InputHandler)
         assert isinstance(save_data, SaveData)
         assert isinstance(planet, Planet)
 
         self.screen = screen
+        self.input_handler = input_handler
         self.all_sprites = pygame.sprite.Group()
 
         # The Planet is now just a seed and a generator
@@ -64,7 +66,6 @@ class Level: #Level é um cenário genérico, acho que é tipo o screen que o Ed
         # NOVO: Carregador de Assets
         self.object_assets = {} # Dicionário para guardar os sprites
         self.load_object_assets()
-
 
     def load_object_assets(self):
         print("Loading object assets...")
@@ -124,6 +125,7 @@ class Level: #Level é um cenário genérico, acho que é tipo o screen que o Ed
             del self.loaded_chunks[chunk_coord]
 
         # ATUALIZADO: draw_layers com Grid Mode
+
     def draw_layers(self):
         """
         Draws all layers: terrain first, then objects on top.
@@ -182,7 +184,6 @@ class Level: #Level é um cenário genérico, acho que é tipo o screen que o Ed
                         if self.debug_grid_mode and zoomed_tile_size > 4:
                             pygame.draw.rect(self.screen, colors.black, rect, 1)
 
-
     def draw_sprites(self):
         """
         Draws all sprites (PLAYER, etc), correctly offset by the camera.
@@ -225,9 +226,20 @@ class Level: #Level é um cenário genérico, acho que é tipo o screen que o Ed
     def run(self, dt):
         self.screen.fill('black')
 
+        # Ler o input
+        input = self.input_handler.get_input()
+
+        # Features de debug
+        if input.just_pressed[pygame.K_m]:
+            print("Generating debug map...")
+            self.generate_debug_map()
+        if input.just_pressed[pygame.K_g]:
+            self.debug_grid_mode = not(self.debug_grid_mode)
+            print(f"Debug Grid Mode: {self.debug_grid_mode}")
+
         # --- Update Phase ---
         self.camera.update(self.player.position)
-        self.all_sprites.update(dt)
+        self.all_sprites.update(input, dt)
         self.manage_chunks()
         
         # --- Draw Phase ---

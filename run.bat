@@ -1,1 +1,2 @@
-python SpaceGame/main.py
+cd SpaceGame
+python main.py

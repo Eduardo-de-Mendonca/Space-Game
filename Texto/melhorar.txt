@@ -1,3 +1,5 @@
+
+
 HUB do espaço:
     Quando o jogador toma dano, ele é teleportado de volta para a posição inicial. Mas acho que seria mais legal ele ficar onde está, porém temporariamente invulnerável
 
@@ -12,11 +14,14 @@ HUB do espaço:
         Pois o jogo quebra quando não são iguais a SCREEN_WIDTH e 
         SCREEN_HEIGHT.
 
-    É bom restaurar o game over que existia, mas agora em uma classe GameOverScreen separada
-    
-    É bom trocar as setas por WASD, para ficar consistente com a superfície. Mas o comportamento de aceleração tá bem maneiro, e é legal ele ser diferente da superfície mesmo. Só quero mudar as teclas.
+    É bom restaurar o game over que existia
+        Mas agora em uma classe GameOverScreen separada
 
-    Ao sair de um planeta, seria bom sair da posição onde o planeta estava. Mas isso precisa de uma lógica para impedir o jogador de imediatamente colidir com o mesmo planeta de novo
+    Ao sair de um planeta, seria bom sair da posição onde o planeta estava.
+        Mas isso precisa de uma lógica para impedir o jogador de imediatamente colidir com o mesmo planeta de novo
+
+    Imagem da nave:
+        A transparência dela não tava funcionando (estava ficando com um fundo quadriculado, a despeito de chamarmos convert_alpha para preservar o alpha em vez de convert). Troquei por outra imagem mais simples.
 
 A tela é pygame.resizable, mas temos constantes indicando o tamanho da tela, as quais são lidas em vários lugares
     Ou seja, quando o jogador altera o tamanho da janela, isso quebra o jogo

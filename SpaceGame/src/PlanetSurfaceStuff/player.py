@@ -1,4 +1,5 @@
 from src.Config.settings import *
+from src.Others.input import InputFrame
 
 class Player(pygame.sprite.Sprite):
     def __init__(self, position, group):
@@ -17,8 +18,9 @@ class Player(pygame.sprite.Sprite):
         self.direction = pygame.math.Vector2()
         self.speed = PLAYER_SPEED
 
-    def input(self):
-        keys = pygame.key.get_pressed()
+    def react_to_input(self, input):
+        assert isinstance(input, InputFrame)
+        keys = input.pressing
 
         # Movement input
         if keys[pygame.K_w]:
@@ -35,8 +37,8 @@ class Player(pygame.sprite.Sprite):
         else:
             self.direction.x = 0
 
-    def update(self, dt):
-        self.input()
+    def update(self, input, dt):
+        self.react_to_input(input)
 
         if self.direction.magnitude() > 0:
             self.direction = self.direction.normalize()

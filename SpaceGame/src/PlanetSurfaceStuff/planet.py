@@ -1,7 +1,6 @@
 import noise
 from src.Config.settings import *
 import random
-import src.Config.settings
 from src.Config.planet_templates import *
 
 class Planet:

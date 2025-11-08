@@ -1,24 +1,31 @@
-Grafo de dependências do projeto
+Árvore de dependências do projeto
+    Separando os arquivos em "alturas", tal que um arquivo só importa de outros de altura menor
 
-main.py
-    Importa game
+Altura 0:
+    src.Config.settings
+    src.Config.planet_templates
 
-        Importa space_level
-            Importa space_classes
+Altura 1:
+    src.Others.camera
+    src.Others.helper
+    src.Others.input
 
-            Importa level
-                Importa player
-                    Importa settings
-                        Importa math
-                        Importa pygame
+    src.PlanetSurfaceStuff.planet
+    src.PlanetSurfaceStuff.player
 
-                Importa camera
-                    Importa settings
+Altura 2:
+    src.Config.save_data
 
-                Importa save_data
-                    Importa planet
-                        Importa noise
-                        Importa random
-                        Importa settings
+    src.SpaceStuff.classes_ship
 
-    Importa sys
+Altura 3:
+    src.PlanetSurfaceStuff.level
+
+Altura 4:
+    src.SpaceStuff.main_ship
+
+Altura 5:
+    src.game
+
+Altura 6:
+    main

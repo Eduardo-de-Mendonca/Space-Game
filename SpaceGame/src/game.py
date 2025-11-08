@@ -1,5 +1,5 @@
 #from Classes.SpaceStuff.space_level import *
-from src.Fase_da_nave.main_nave import *
+from src.SpaceStuff.main_ship import *
 from src.Others.input import InputHandler
 
 # import temporário

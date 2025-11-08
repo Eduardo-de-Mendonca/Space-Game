@@ -3,7 +3,8 @@ from src.PlanetSurfaceStuff.player import *
 from src.Others.camera import Camera
 from src.Others.input import InputHandler
 from src.Config.planet_templates import *
-from src.Config.save_data import *
+from src.Config.save_data import SaveData
+from src.PlanetSurfaceStuff.planet import Planet
 #from transition import TransitionScreen
 import random
 

@@ -1,4 +1,4 @@
 Temp
 Temp_*
 .vscode
-*.pyc
+__pycache__/

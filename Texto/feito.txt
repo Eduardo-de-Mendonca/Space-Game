@@ -39,3 +39,6 @@ Dudu, em 08/11:
 
         Ao sair de um planeta, seria bom sair da posição onde o planeta estava.
             Mas isso precisa de uma lógica para impedir o jogador de imediatamente colidir com o mesmo planeta de novo
+
+        Restaurar o game over que existia
+            Mas agora em uma classe GameOverScreen separada

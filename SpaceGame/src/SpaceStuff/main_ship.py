@@ -1,11 +1,13 @@
 import pygame
 import math, random
+
 from src.SpaceStuff.classes_ship import *
 from src.Others.camera import CameraWithoutZoom
 from src.Others.input import InputHandler
 from src.Config.save_data import SaveData
 from src.PlanetSurfaceStuff.level import Level
 from src.Config.settings import *
+from src.TransitionStuff.transition import TransitionScreen
 
 class AsteroidsGame:
     def __init__(self, screen, input_handler, save_data):
@@ -27,6 +29,7 @@ class AsteroidsGame:
         self.planets = [PlanetInSpace(pygame.math.Vector2(500, 300), save_data.all_planets[0])]
 
         self.sublevel = None
+        self.transitionee = None # Relevante quando sublevel é uma tela de transição. Determina para qual tela transicionaremos quando a transição acabar
 
     def spawn_wave(self):
         new_asteroids = []
@@ -128,17 +131,26 @@ class AsteroidsGame:
             destination_id = 0
             self.player.planet_iframes = MAX_PLANET_IFRAMES
 
-            self.sublevel = Level(self.screen, self.input_handler, self.save_data, self.save_data.all_planets[destination_id])
+            self.transitionee = Level(self.screen, self.input_handler, self.save_data, self.save_data.all_planets[destination_id])
+            self.sublevel = TransitionScreen(self.screen, 'Pousando no planeta...')
 
     def run(self, dt):
         if self.sublevel != None:
-            # Aqui está a mágica da lógica de subtelas! Se minha subtela não é None, eu apenas rodo ela
-            assert isinstance(self.sublevel, Level)
-            if not(self.sublevel.running):
-                self.sublevel = None
-            else:
-                self.sublevel.run(dt)
-                return
+            # Aqui está o ponto-chave da lógica de subtelas! Se minha subtela não é None, eu apenas rodo ela
+            if isinstance(self.sublevel, TransitionScreen):
+                if not(self.sublevel.active):
+                    self.sublevel = self.transitionee
+                    return # Retorno direto para não desenhar esta tela
+                else:
+                    self.sublevel.run()
+                    return
+                
+            elif isinstance(self.sublevel, Level):
+                if not(self.sublevel.running):
+                    self.sublevel = None
+                else:
+                    self.sublevel.run(dt)
+                    return
         
         'Roda apenas um frame da tela. Não há loop infinito aqui: o loop infinito está em Game.'
         input = self.input_handler.get_input()

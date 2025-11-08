@@ -1,10 +1,14 @@
-
-from src.PlanetSurfaceStuff.player import *
-from src.Others.camera import Camera
-from src.Others.input import InputHandler
 from src.Config.planet_templates import *
 from src.Config.save_data import SaveData
+
+from src.Others.camera import Camera
+from src.Others.input import InputHandler
+
 from src.PlanetSurfaceStuff.planet import Planet
+from src.PlanetSurfaceStuff.player import *
+
+from src.TransitionStuff.transition import TransitionScreen
+
 #from transition import TransitionScreen
 import random
 
@@ -56,7 +60,6 @@ class Level:
         self.running = True
 
         self.debug_grid_mode = DEBUG_GRID_MODE_START # Começa ligado para você ver
-
 
         # NOVO: O "Delta File" / "Arquivo TXT"
         # Chave: (world_x, world_y), Valor: new_object_id
@@ -222,9 +225,20 @@ class Level:
         return False
     
     def on_ship_interact(self):
-        self.running = False
+        self.sublevel = TransitionScreen(self.screen, "Decolando...")
 
     def run(self, dt):
+        if self.sublevel != None:
+            assert isinstance(self.sublevel, TransitionScreen)
+
+            if self.sublevel.active == False:
+                self.sublevel = None
+                self.running = False # Se terminou de transicionar, então vamos decolar, e podemos sair desta tela
+                return # Retorno direto para não desenhar esta tela
+            else:
+                self.sublevel.run()
+                return
+
         self.screen.fill('black')
 
         # Ler o input
@@ -251,7 +265,7 @@ class Level:
         keys = pygame.key.get_pressed()
 
         if self.check_ship_interaction():
-            self.running = False
+            self.on_ship_interact()
 
         '''
         if not self.entering_ship and self.check_ship_interaction():

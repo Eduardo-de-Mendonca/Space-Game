@@ -3,9 +3,6 @@ Superfície do planeta:
         Especialmente na diagonal. Deve ter a ver com algum tipo de arredondamento que é feito em algum momento. É bom resolver isso.
 
 HUB do espaço:
-    É bom restaurar o game over que existia
-        Mas agora em uma classe GameOverScreen separada
-
     Spawn de asteroides:
         Agora, eles spawnam na tela, e somem quando saem da tela. Seria legal eles spawnarem fora, prestes a entrar, e sumirem quando ficam uma certa distância fora da tela
 

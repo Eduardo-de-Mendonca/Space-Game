@@ -10,6 +10,8 @@ Altura 1:
     src.Others.helper
     src.Others.input
 
+    src.TransitionStuff.transition
+
     src.PlanetSurfaceStuff.planet
     src.PlanetSurfaceStuff.player
 

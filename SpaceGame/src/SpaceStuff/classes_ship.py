@@ -27,7 +27,7 @@ class Player:
         self.asteroid_iframes = 0
 
         # 🔹 Carrega e ajusta a imagem da nave
-        self.image_original = pygame.image.load("src/Assets/nave.png").convert_alpha()
+        self.image_original = pygame.image.load("src/Assets/nave_old.png").convert_alpha()
         self.image_original = pygame.transform.scale(self.image_original, (60, 60))  # ajuste de tamanho
         self.image = self.image_original # imagem que será desenhada
         self.rect = self.image_original.get_rect(center=(self.x, self.y)) 

@@ -38,6 +38,11 @@ class Level:
         self.planet = planet
 
         # Nave
+        self.ship_image = pygame.image.load("src/Assets/nave_old.png").convert_alpha()
+
+        # opcional, se quiser mudar o tamanho
+        self.ship_image = pygame.transform.scale(self.ship_image, (60, 60))
+
         self.entering_ship = False
         self.ship_pos = pygame.Vector2(200, 200) #Para teste deixei uma posição fixa
 
@@ -211,11 +216,14 @@ class Level:
             self.screen.blit(scaled_image, screen_rect)
 
     def draw_ship(self):
-    # Converte a posição do mundo para a tela usando a câmera
+        # Converte da posição do mundo para tela
         screen_pos = self.camera.world_to_screen(self.ship_pos)
-    
-    # Desenha a nave como um círculo branco de raio 6 pixels
-        pygame.draw.circle(self.screen, (255, 255, 255), (int(screen_pos.x), int(screen_pos.y)), 6)
+
+        # Obtém o retângulo da imagem, centralizado na posição da nave
+        ship_rect = self.ship_image.get_rect(center=(int(screen_pos.x), int(screen_pos.y)))
+
+        # Desenha a imagem na tela
+        self.screen.blit(self.ship_image, ship_rect)
     
     def check_ship_interaction(self):
         player_pos = self.player.position

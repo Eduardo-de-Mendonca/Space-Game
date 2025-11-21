@@ -39,11 +39,6 @@ class Level:
         self.planet = planet
 
         # Nave
-        self.ship_image = pygame.image.load("SpaceGame/src/Assets/nave_old.png").convert_alpha()
-
-        # opcional, se quiser mudar o tamanho
-        self.ship_image = pygame.transform.scale(self.ship_image, (60, 60))
-
         self.entering_ship = False
         self.ship_pos = pygame.Vector2(200, 200) #Para teste deixei uma posição fixa
 
@@ -313,51 +308,3 @@ class Level:
         
     def generate_debug_map(self):
         self.planet.generate_debug_map()
-
-    def check_collisions(self):
-        """ Checa colisões entre sprites (player vs inimigos, etc) """
-        
-        # Checa colisão do 'player' contra o GRUPO 'enemy_sprites'
-        # False = não mata o inimigo na colisão
-        # (se quiser que o inimigo morra ao tocar, mude para True)
-        colisoes = pygame.sprite.spritecollide(self.player, self.enemy_sprites, False)
-        
-        if colisoes:
-            # 'colisoes' é uma lista dos inimigos que tocaram
-            print("AU! Colidiu com um inimigo!")
-            #
-            # AQUI VOCÊ ADICIONA SUA LÓGICA DE DANO:
-            # ex: self.player.receber_dano(10)
-            # ex: self.player.dar_knockback()
-            #
-            # (Para evitar dano em todos os frames, 
-            # você precisará de "iframes" de invencibilidade no player)
-            pass
-
-    def tentar_atacar(self):
-        # Verifica se o cooldown acabou
-        if self.player.attack_cooldown <= 0:
-            self.player.attack_cooldown = 0.5
-            # Inicia a animação de ataque
-            self.player.attacking = True
-            self.player.attack_timer = 0.0
-            self.player.attack_angle = 90 # Ângulo inicial
-            return True
-        return False
-
-    def resolver_ataque(self):
-        attack_hitbox = self.player.get_attack_hitbox()
-        inimigos_atingidos = []
-        for inimigo in self.enemy_sprites:
-            if attack_hitbox.colliderect(inimigo.rect):
-                inimigos_atingidos.append(inimigo)
-
-        for inimigo in inimigos_atingidos:
-            inimigo.receber_dano(self.player.dano_ataque)
-            # Empurrãozinho (Knockback)
-            if inimigo.position != self.player.position:
-                try:
-                    direcao_emprurrao = (inimigo.position - self.player.position).normalize()
-                    inimigo.position += direcao_emprurrao * 20
-                except ValueError:
-                    pass

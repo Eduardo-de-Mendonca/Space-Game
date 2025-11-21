@@ -12,4 +12,4 @@ if __name__ == '__main__':
     # Exit the program
     sys.exit()
 
-    # O jogo é um objeto de uma classe né, acho que assim que deve ser pelo que eu vi de melhor prática. Esse arquivo só roda mesmo
+    # O jogo é um objeto de uma classe né, acho que assim que deve ser pelo que eu vi de melhor prática. Esse arquivo só roda mesmow

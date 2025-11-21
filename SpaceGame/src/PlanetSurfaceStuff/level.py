@@ -8,6 +8,7 @@ from src.PlanetSurfaceStuff.planet import Planet
 from src.PlanetSurfaceStuff.player import *
 
 from src.TransitionStuff.transition import TransitionScreen
+from src.PlanetSurfaceStuff.enemy import Inimigo
 
 #from transition import TransitionScreen
 import random
@@ -38,8 +39,16 @@ class Level:
         self.planet = planet
 
         # Nave
+        self.ship_image = pygame.image.load("SpaceGame/src/Assets/nave_old.png").convert_alpha()
+
+        # opcional, se quiser mudar o tamanho
+        self.ship_image = pygame.transform.scale(self.ship_image, (60, 60))
+
         self.entering_ship = False
         self.ship_pos = pygame.Vector2(200, 200) #Para teste deixei uma posição fixa
+
+        #inimigos
+        self.enemy_sprites = pygame.sprite.Group()
 
         #Caso queira uma posição aletória opção abaixo
         #self.ship_pos = (random.randint(0, WORLD_SIZE_IN_CHUNKS[0] * CHUNK_SIZE - 1), 
@@ -58,6 +67,12 @@ class Level:
         self.loaded_chunks = {}
 
         self.running = True
+
+        inimigo1 = Inimigo(pos_x=500, pos_y=500, player_ref=self.player)
+        inimigo2 = Inimigo(pos_x=600, pos_y=400, player_ref=self.player)
+
+        self.all_sprites.add(inimigo1, inimigo2) # Para Update e Draw
+        self.enemy_sprites.add(inimigo1, inimigo2) # Para Colisões
 
         self.debug_grid_mode = DEBUG_GRID_MODE_START # Começa ligado para você ver
 
@@ -206,16 +221,20 @@ class Level:
                 zoomed_width,
                 zoomed_height
             )
+            self.player.draw_sword(self.screen, self.camera)
             
             scaled_image = pygame.transform.scale(sprite.image, (zoomed_width, zoomed_height))
             self.screen.blit(scaled_image, screen_rect)
 
     def draw_ship(self):
-    # Converte a posição do mundo para a tela usando a câmera
+        # Converte da posição do mundo para tela
         screen_pos = self.camera.world_to_screen(self.ship_pos)
-    
-    # Desenha a nave como um círculo branco de raio 6 pixels
-        pygame.draw.circle(self.screen, (255, 255, 255), (int(screen_pos.x), int(screen_pos.y)), 6)
+
+        # Obtém o retângulo da imagem, centralizado na posição da nave
+        ship_rect = self.ship_image.get_rect(center=(int(screen_pos.x), int(screen_pos.y)))
+
+        # Desenha a imagem na tela
+        self.screen.blit(self.ship_image, ship_rect)
     
     def check_ship_interaction(self):
         player_pos = self.player.position
@@ -266,6 +285,22 @@ class Level:
 
         if self.check_ship_interaction():
             self.on_ship_interact()
+        
+        input = self.input_handler.get_input()
+        
+        # DETECTAR ATAQUE (Botão Esquerdo do Mouse ou Tecla J/Espaço)
+        # Vamos supor que input.mouse_pressed[0] é o clique esquerdo
+        # Ou use input.just_pressed[pygame.K_j]
+        
+        atacou = False
+        if pygame.mouse.get_pressed()[0]: # [0] é o botão esquerdo
+            atacou = self.tentar_atacar()
+
+        # ... (resto do update, chunks, etc) ...
+
+        # Se atacou neste frame, desenha o ataque e checa dano
+        if atacou:
+            self.resolver_ataque()
 
         '''
         if not self.entering_ship and self.check_ship_interaction():
@@ -278,3 +313,51 @@ class Level:
         
     def generate_debug_map(self):
         self.planet.generate_debug_map()
+
+    def check_collisions(self):
+        """ Checa colisões entre sprites (player vs inimigos, etc) """
+        
+        # Checa colisão do 'player' contra o GRUPO 'enemy_sprites'
+        # False = não mata o inimigo na colisão
+        # (se quiser que o inimigo morra ao tocar, mude para True)
+        colisoes = pygame.sprite.spritecollide(self.player, self.enemy_sprites, False)
+        
+        if colisoes:
+            # 'colisoes' é uma lista dos inimigos que tocaram
+            print("AU! Colidiu com um inimigo!")
+            #
+            # AQUI VOCÊ ADICIONA SUA LÓGICA DE DANO:
+            # ex: self.player.receber_dano(10)
+            # ex: self.player.dar_knockback()
+            #
+            # (Para evitar dano em todos os frames, 
+            # você precisará de "iframes" de invencibilidade no player)
+            pass
+
+    def tentar_atacar(self):
+        # Verifica se o cooldown acabou
+        if self.player.attack_cooldown <= 0:
+            self.player.attack_cooldown = 0.5
+            # Inicia a animação de ataque
+            self.player.attacking = True
+            self.player.attack_timer = 0.0
+            self.player.attack_angle = 90 # Ângulo inicial
+            return True
+        return False
+
+    def resolver_ataque(self):
+        attack_hitbox = self.player.get_attack_hitbox()
+        inimigos_atingidos = []
+        for inimigo in self.enemy_sprites:
+            if attack_hitbox.colliderect(inimigo.rect):
+                inimigos_atingidos.append(inimigo)
+
+        for inimigo in inimigos_atingidos:
+            inimigo.receber_dano(self.player.dano_ataque)
+            # Empurrãozinho (Knockback)
+            if inimigo.position != self.player.position:
+                try:
+                    direcao_emprurrao = (inimigo.position - self.player.position).normalize()
+                    inimigo.position += direcao_emprurrao * 20
+                except ValueError:
+                    pass

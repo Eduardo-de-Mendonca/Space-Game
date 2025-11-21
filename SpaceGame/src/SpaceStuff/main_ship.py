@@ -21,6 +21,7 @@ class AsteroidsGame:
         self.bullets = []
         self.lives = 3
         self.font = pygame.font.SysFont("arial", 24)
+        self.margem = 150
         self.asteroids = self.spawn_wave()
         self.state = asteroids_game_states.RUNNING
 
@@ -33,19 +34,43 @@ class AsteroidsGame:
 
     def spawn_wave(self):
         new_asteroids = []
+        cpos = self.camera.get_offset()
+        cx = cpos.x  
+        cy = cpos.y  
+        w = SCREEN_WIDTH
+        h = SCREEN_HEIGHT
+
+        # 2. Definir os limites do SPawn no Mundo com Margem
+        # Estes são os limites MÍNIMOS e MÁXIMOS onde o asteroide PODE aparecer.
+        min_spawn_x = cx - self.margem
+        max_spawn_x = cx + w + self.margem
+        min_spawn_y = cy - self.margem
+        max_spawn_y = cy + h + self.margem
+    
         for _ in range(ASTEROIDS_SPAWNED_PER_WAVE):
-            # Spawna em torno do jogador, e não a partir da coordenada 0, agora que há câmera
-            cpos = self.camera.get_offset()
-            cx = int(cpos[0])
-            cy = int(cpos[1])
-            w = SCREEN_WIDTH
-            h = SCREEN_HEIGHT
-
-            x = random.randint(cx, cx + w)
-            y = random.randint(cy, cy + h)
-
-            new_asteroids.append(Asteroid(x,
-            y))
+            # 3. Escolher o lado do spawn: Topo, Fundo, Esquerda ou Direita
+            side = random.choice(['top', 'bottom', 'left', 'right'])
+        
+            if side == 'top':
+                # Spawn no topo (fora da tela, mas na largura da área visível + margem)
+                x = random.uniform(min_spawn_x, max_spawn_x)
+                y = random.uniform(min_spawn_y, cy) # Coordenada Y entre a margem superior e o limite superior da tela
+            elif side == 'bottom':
+                # Spawn no fundo
+                x = random.uniform(min_spawn_x, max_spawn_x)
+                y = random.uniform(cy + h, max_spawn_y) # Coordenada Y entre o limite inferior da tela e a margem inferior
+            elif side == 'left':
+                # Spawn à esquerda
+                x = random.uniform(min_spawn_x, cx) # Coordenada X entre a margem esquerda e o limite esquerdo da tela
+                y = random.uniform(cy, cy + h) # Coordenada Y dentro da altura da tela (sem margem no Y)
+            elif side == 'right':
+                # Spawn à direita
+                x = random.uniform(cx + w, max_spawn_x) # Coordenada X entre o limite direito da tela e a margem direita
+                y = random.uniform(cy, cy + h) # Coordenada Y dentro da altura da tela (sem margem no Y)
+            
+        
+            new_asteroids.append(Asteroid(x, y))
+        
         return new_asteroids
 
     def check_collision(self, obj1_x, obj1_y, obj2_x, obj2_y, dist):

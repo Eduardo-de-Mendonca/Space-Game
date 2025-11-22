@@ -3,7 +3,7 @@ import pygame
 from pygame.math import Vector2
 import random
 
-class Inimigo(pygame.sprite.Sprite):
+class Enemy(pygame.sprite.Sprite):
     
     def __init__(self, pos_x, pos_y, player_ref):
         super().__init__() 
@@ -53,7 +53,7 @@ class Inimigo(pygame.sprite.Sprite):
         
         self.position += self.patrol_direction * (self.velocidade * 0.5) * dt
 
-    def receber_dano(self, quantidade):
+    def take_damage(self, quantidade):
         self.vida -= quantidade
         print(f"Inimigo tomou {quantidade} de dano. Vida restante: {self.vida}")
         

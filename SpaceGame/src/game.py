@@ -5,7 +5,7 @@ from src.SpaceStuff.main_ship import *
 from src.GameOverStuff.game_over import GameOverScreen, game_over_states
 
 # import temporário
-from src.Config.save_data import *
+from src.SaveDataStuff.save_data import *
 
 class Game:
     def __init__(self):

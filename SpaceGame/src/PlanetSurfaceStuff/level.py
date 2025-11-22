@@ -1,5 +1,5 @@
 from src.Config.planet_templates import *
-from src.Config.save_data import SaveData
+from src.SaveDataStuff.save_data import SaveData
 
 from src.Others.camera import Camera
 from src.Others.input import InputHandler
@@ -8,7 +8,7 @@ from src.PlanetSurfaceStuff.planet import Planet
 from src.PlanetSurfaceStuff.player import *
 
 from src.TransitionStuff.transition import TransitionScreen
-from src.PlanetSurfaceStuff.enemy import Inimigo
+from src.PlanetSurfaceStuff.enemy import Enemy
 
 #from transition import TransitionScreen
 import random
@@ -33,10 +33,14 @@ class Level:
 
         self.screen = screen
         self.input_handler = input_handler
-        self.all_sprites = pygame.sprite.Group()
 
+        self.save_data = save_data
         # The Planet is now just a seed and a generator
         self.planet = planet
+
+        self.all_sprites = pygame.sprite.Group()
+
+
 
         # Nave
         self.entering_ship = False
@@ -68,8 +72,8 @@ class Level:
         # opcional, se quiser mudar o tamanho
         self.ship_image = pygame.transform.scale(self.ship_image, (60, 60))
 
-        inimigo1 = Inimigo(pos_x=500, pos_y=500, player_ref=self.player)
-        inimigo2 = Inimigo(pos_x=600, pos_y=400, player_ref=self.player)
+        inimigo1 = Enemy(pos_x=500, pos_y=500, player_ref=self.player)
+        inimigo2 = Enemy(pos_x=600, pos_y=400, player_ref=self.player)
 
         self.all_sprites.add(inimigo1, inimigo2) # Para Update e Draw
         self.enemy_sprites.add(inimigo1, inimigo2) # Para Colisões
@@ -221,7 +225,7 @@ class Level:
                 zoomed_width,
                 zoomed_height
             )
-            self.player.draw_sword(self.screen, self.camera)
+            self.player.draw_attacking_item(self.screen, self.camera)
             
             scaled_image = pygame.transform.scale(sprite.image, (zoomed_width, zoomed_height))
             self.screen.blit(scaled_image, screen_rect)
@@ -276,67 +280,67 @@ class Level:
         self.all_sprites.update(input, dt)
         self.manage_chunks()
         
+        if self.check_ship_interaction():
+            self.on_ship_interact()
+
+        # DETECTAR ATAQUE (Botão Esquerdo do Mouse)
+        atacou = False
+        if pygame.mouse.get_pressed()[0]: # [0] é o botão esquerdo
+            atacou = self.attempt_attack()
+
+        # Se atacou neste frame, desenha o ataque e checa dano
+        if atacou:
+            self.resolve_attack()
+
         # --- Draw Phase ---
         self.draw_layers() 
         self.draw_sprites()
         self.draw_ship()
-
-        keys = pygame.key.get_pressed()
-
-        if self.check_ship_interaction():
-            self.on_ship_interact()
-        
-        input = self.input_handler.get_input()
-        
-        # DETECTAR ATAQUE (Botão Esquerdo do Mouse ou Tecla J/Espaço)
-        # Vamos supor que input.mouse_pressed[0] é o clique esquerdo
-        # Ou use input.just_pressed[pygame.K_j]
-        
-        atacou = False
-        if pygame.mouse.get_pressed()[0]: # [0] é o botão esquerdo
-            atacou = self.tentar_atacar()
-
-        # ... (resto do update, chunks, etc) ...
-
-        # Se atacou neste frame, desenha o ataque e checa dano
-        if atacou:
-            self.resolver_ataque()
-
-        '''
-        if not self.entering_ship and self.check_ship_interaction():
-            if keys[pygame.K_RETURN]:
-                self.entering_ship = True
-                transition = TransitionScreen(self.screen, "Entrando na nave...", duration=2)
-                transition.run()
-                return self.on_ship_interact()
-        '''
         
     def generate_debug_map(self):
         self.planet.generate_debug_map()
-    def tentar_atacar(self):
+
+    def attempt_attack(self):
         # Verifica se o cooldown acabou
         if self.player.attack_cooldown <= 0:
             self.player.attack_cooldown = 0.5
             # Inicia a animação de ataque
+            at_it_img = self.save_data.inventory[0].image
+            # Redimensiona se a imagem for muito grande (Pixel art as vezes vem pequena ou enorme)
+            at_it_img = pygame.transform.scale(at_it_img, ATTACKING_ITEM_IMAGE_DIMENSIONS)
+
             self.player.attacking = True
+            self.player.attacking_item_image = at_it_img
+            self.attacking_item_rect = at_it_img.get_rect()
+
             self.player.attack_timer = 0.0
             self.player.attack_angle = 90 # Ângulo inicial
             return True
+        
         return False
 
-    def resolver_ataque(self):
+    def resolve_attack(self):
+        '''
+        Roda uma única vez no frame em que o ataque começa (só aqui temos dano, e tudo mais). Nos demais frames, temos só a animação.
+        '''
         attack_hitbox = self.player.get_attack_hitbox()
+        attacking_item = self.save_data.inventory[0] # O item selecionado
+
         inimigos_atingidos = []
         for inimigo in self.enemy_sprites:
+            assert isinstance(inimigo, Enemy)
+
             if attack_hitbox.colliderect(inimigo.rect):
                 inimigos_atingidos.append(inimigo)
 
         for inimigo in inimigos_atingidos:
-            inimigo.receber_dano(self.player.dano_ataque)
+            assert isinstance(inimigo, Enemy)
+            inimigo.take_damage(attacking_item.attack_power)
+            
             # Empurrãozinho (Knockback)
             if inimigo.position != self.player.position:
                 try:
-                    direcao_emprurrao = (inimigo.position - self.player.position).normalize()
-                    inimigo.position += direcao_emprurrao * 20
+                    direcao_empurrao = (inimigo.position - self.player.position).normalize()
+                    inimigo.position += direcao_empurrao * 20
                 except ValueError:
                     pass

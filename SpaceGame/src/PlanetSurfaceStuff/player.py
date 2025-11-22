@@ -1,5 +1,9 @@
 from src.Config.settings import *
 from src.Others.input import InputFrame
+from src.Others.camera import Camera
+
+from src.SaveDataStuff.item import Item
+
 from pygame.math import Vector2
 from math import floor, cos, pi
 import random
@@ -21,22 +25,17 @@ class Player(pygame.sprite.Sprite):
         self.direction = pygame.math.Vector2()
         self.speed = PLAYER_SPEED
 
+        # Questões de ataque
         self.attack_cooldown = 0.0
-        self.raio_ataque = 50 # Alcance da espada/soco
-        self.dano_ataque = 1
-        # Animação da Espada
-        self.sword_image = pygame.image.load("src/Assets/espada.png").convert_alpha()
-        self.sword_rect = self.sword_image.get_rect()
-        self.attacking = False
+        self.attack_radius = 50 # Alcance da espada/soco
+        
         self.attack_duration = 0.5 # Duração total da animação em segundos
         self.attack_timer = 0.0
         self.attack_angle = 0.0
 
-        # Redimensiona se a imagem for muito grande (Pixel art as vezes vem pequena ou enorme)
-        # Ajuste (32, 32) para o tamanho que ficar bom no seu jogo
-        self.sword_image = pygame.transform.scale(self.sword_image, (60, 60))
-        
-        self.sword_rect = self.sword_image.get_rect()
+        self.attacking = False
+        self.attacking_item_image = None
+        self.attacking_item_rect = None
 
     def react_to_input(self, input):
         assert isinstance(input, InputFrame)
@@ -89,15 +88,18 @@ class Player(pygame.sprite.Sprite):
     def get_attack_hitbox(self):
         """ Retorna a área de ataque """
         center = self.position
-        hitbox = pygame.Rect(0, 0, self.raio_ataque * 2, self.raio_ataque * 2)
+        hitbox = pygame.Rect(0, 0, self.attack_radius * 2, self.attack_radius * 2)
         hitbox.center = (int(center.x), int(center.y))
         return hitbox
     
-    def draw_sword(self, screen, camera):
-        """ Desenha a espada animada durante o ataque """
+    def draw_attacking_item(self, screen, camera):
+        """ Desenha o item animado durante o ataque. Se não estiver atacando, não faz nada."""
+        assert isinstance(screen, pygame.Surface)
+        assert isinstance(camera, Camera)
+
         if self.attacking:
             # Rotaciona a imagem da espada
-            rotated_sword = pygame.transform.rotate(self.sword_image, self.attack_angle)
+            rotated_sword = pygame.transform.rotate(self.attacking_item_image, self.attack_angle)
             
             # Posição da espada relativa ao jogador (no mundo)
             # Ajuste esses valores (20, 0) para posicionar a espada corretamente na mão

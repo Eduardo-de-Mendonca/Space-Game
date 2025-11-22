@@ -4,6 +4,9 @@
 Altura 0:
     src.Config.settings
     src.Config.planet_templates
+    src.SaveDataStuff.item
+
+    src.PlanetSurfaceStuff.enemy
 
 Altura 1:
     src.Others.camera
@@ -16,7 +19,7 @@ Altura 1:
     src.PlanetSurfaceStuff.player
 
 Altura 2:
-    src.Config.save_data
+    src.SaveDataStuff.save_data
     src.GameOverStuff.game_over
     src.SpaceStuff.classes_ship
 

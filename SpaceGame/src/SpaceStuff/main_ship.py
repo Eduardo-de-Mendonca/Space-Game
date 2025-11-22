@@ -4,7 +4,7 @@ import math, random
 from src.SpaceStuff.classes_ship import *
 from src.Others.camera import CameraWithoutZoom
 from src.Others.input import InputHandler
-from src.Config.save_data import SaveData
+from src.SaveDataStuff.save_data import SaveData
 from src.PlanetSurfaceStuff.level import Level
 from src.Config.settings import *
 from src.TransitionStuff.transition import TransitionScreen

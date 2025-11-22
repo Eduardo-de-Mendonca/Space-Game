@@ -12,6 +12,7 @@ FPS = 60
 PLAYER_SPEED = 100
 PLAYER_START_POS = (100, 100) # Starting in world pixels
 PLAYER_RELATIVE_SIZE = 0.5
+ATTACKING_ITEM_IMAGE_DIMENSIONS = (60, 60)
 
 # --- World & Chunk Settings ---
 TILE_SIZE = 16*2 # Pixel size of a single tile

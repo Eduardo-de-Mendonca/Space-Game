@@ -1,0 +1,22 @@
+Temos que terminar até segunda-feira. O que vamos adicionar no jogo?
+
+O que temos?
+    Hub de espaço funciona, mas só tem um planeta.
+    Temos inimigos e ataques. Mas o jogador não tem vida. E a espada ataca sempre para a direita.
+
+Ideia:
+    Adicionar inventário. Inimigos e árvores droppam itens. Você ataca com o item que tem na mão (a animação é o item rodando). Diferentes itens têm diferentes poderes de ataque.
+
+    Cada inimigo tem um nível. Cada planeta tem um nível, o qual indica o nível dos seus inimigos e dos seus drops.
+    
+    Tem sempre uma seta cinza apontando para o planeta do final boss, o qual tem um nível muito alto. E uma seta de outra cor apontando para o planeta mais próximo (ou, em geral, para um "próximo planeta" sugerido, com um nível mais acessível)
+
+    Aí, o jogador é encorajado a explorar outros planetas para enfrentar o final boss.
+        A tela inicial do jogo explica isso mais ou menos. Para reforçar, a tela de game over fala "tente explorar outros planetas para se fortalecer antes" ou algo do tipo
+
+Vantagens:
+    É possível ter uma progressão e objetivo assim mesmo antes de adicionar crafting
+        Pois acho que não dá tempo de colocar crafting antes de segunda. Se der, vai dar pra colocar só a mecânica, sem todos os itens craftáveis, o que não vai servir para muita coisa até segunda.
+
+    Não precisamos complicar os aspectos defensivos do jogador até segunda. Ele pode ter 3 vidas sempre, tanto no espaço, quanto na superfície, independentemente dos itens que tem.
+        Só os aspectos ofensivos podem melhorar com os itens

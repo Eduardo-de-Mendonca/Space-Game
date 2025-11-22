@@ -1,13 +1,9 @@
 Superfície do planeta:
     Enquanto mexe, o quadrado dá uma trepidada esquisita
-        Especialmente na diagonal. Deve ter a ver com algum tipo de arredondamento que é feito em algum momento. É bom resolver isso.
+        Especialmente na diagonal. Deve ter a ver com algum tipo de arredondamento que é feito em algum momento. É bom resolver isso
 
-HUB do espaço:
-    Spawn de asteroides:
-        Agora, eles spawnam na tela, e somem quando saem da tela. Seria legal eles spawnarem fora, prestes a entrar, e sumirem quando ficam uma certa distância fora da tela
-
-    Imagem da nave:
-        A transparência dela não tava funcionando (estava ficando com um fundo quadriculado, a despeito de chamarmos convert_alpha para preservar o alpha em vez de convert). Troquei por outra imagem mais simples.
+Espaço:
+    Acho uma boa dar tiro com o mouse, mesmo botão do ataque na superfície.
 
 A tela é pygame.resizable, mas temos constantes indicando o tamanho da tela, as quais são lidas em vários lugares
     Ou seja, quando o jogador altera o tamanho da janela, isso quebra o jogo

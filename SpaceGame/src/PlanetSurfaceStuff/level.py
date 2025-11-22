@@ -58,10 +58,15 @@ class Level:
         # The camera will follow the player
         self.camera = Camera()
         
-        # This dictionary will hold the *active* chunk data
+        # This dictionary will hold the active chunk data
         self.loaded_chunks = {}
 
         self.running = True
+
+        self.ship_image = pygame.image.load("src/Assets/nave_old.png").convert_alpha()
+
+        # opcional, se quiser mudar o tamanho
+        self.ship_image = pygame.transform.scale(self.ship_image, (60, 60))
 
         inimigo1 = Inimigo(pos_x=500, pos_y=500, player_ref=self.player)
         inimigo2 = Inimigo(pos_x=600, pos_y=400, player_ref=self.player)
@@ -308,3 +313,30 @@ class Level:
         
     def generate_debug_map(self):
         self.planet.generate_debug_map()
+    def tentar_atacar(self):
+        # Verifica se o cooldown acabou
+        if self.player.attack_cooldown <= 0:
+            self.player.attack_cooldown = 0.5
+            # Inicia a animação de ataque
+            self.player.attacking = True
+            self.player.attack_timer = 0.0
+            self.player.attack_angle = 90 # Ângulo inicial
+            return True
+        return False
+
+    def resolver_ataque(self):
+        attack_hitbox = self.player.get_attack_hitbox()
+        inimigos_atingidos = []
+        for inimigo in self.enemy_sprites:
+            if attack_hitbox.colliderect(inimigo.rect):
+                inimigos_atingidos.append(inimigo)
+
+        for inimigo in inimigos_atingidos:
+            inimigo.receber_dano(self.player.dano_ataque)
+            # Empurrãozinho (Knockback)
+            if inimigo.position != self.player.position:
+                try:
+                    direcao_emprurrao = (inimigo.position - self.player.position).normalize()
+                    inimigo.position += direcao_emprurrao * 20
+                except ValueError:
+                    pass

@@ -25,7 +25,7 @@ class Player(pygame.sprite.Sprite):
         self.raio_ataque = 50 # Alcance da espada/soco
         self.dano_ataque = 1
         # Animação da Espada
-        self.sword_image = pygame.image.load("SpaceGame/src/Assets/espada.png").convert_alpha()
+        self.sword_image = pygame.image.load("src/Assets/espada.png").convert_alpha()
         self.sword_rect = self.sword_image.get_rect()
         self.attacking = False
         self.attack_duration = 0.5 # Duração total da animação em segundos

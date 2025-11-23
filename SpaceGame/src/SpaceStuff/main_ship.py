@@ -156,7 +156,7 @@ class AsteroidsGame:
         # Colisão jogador x planetas
         collided_planet_index = self.check_planet_collisions()
         if collided_planet_index != None and self.player.planet_iframes == 0:
-            destination_id = 0
+            destination_id = collided_planet_index
             self.player.planet_iframes = MAX_PLANET_IFRAMES
 
             planet = self.save_data.all_planets[destination_id]

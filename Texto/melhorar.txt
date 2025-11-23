@@ -5,6 +5,10 @@ Superfície do planeta:
     A hitbox dos inimigos está toda quebrada
         A hitbox dos ataques é gigantesca
 
+    Fazer o jogador spawnar no meio do planeta, em vez do canto
+        Além disso, seria bom não ter tela preta no canto do planeta, e em vez disso ser cíclico (ou então infinito, mas prefiro cíclico).
+        Porém, gerar noise cíclico pode ser mais complicado.
+
 Inventário:
     Melhorar aparência da função draw_text_rectangle de helper.py
         Arredondar as bordas do retângulo, talvez colocar transparência, talvez mudar a fonte... tudo por meio de parâmetros customizáveis com valores default bons.

@@ -1,8 +1,10 @@
 import pygame
 
+from src.Config.settings import *
+
 from src.PlanetSurfaceStuff.planet import Planet
 from src.SpaceStuff.classes_ship import PlanetInSpace
-from src.Config.planet_templates import PlanetTemplate, EARTH_PLANET, LAVA_PLANET
+from src.Config.planet_templates import PlanetTemplate, EARTH_PLANET, LAVA_PLANET, colors
 
 from src.SaveDataStuff.item import ItemKind
 
@@ -15,8 +17,16 @@ class SaveData:
         self.all_planets = [
             PlanetInSpace(
                 pygame.Vector2(1000, 300),
-                Planet(seed = 5117,template = EARTH_PLANET),
-                1
+                Planet(seed = 5117, template = EARTH_PLANET),
+                1,
+                colors.blue
+            ),
+
+            PlanetInSpace(
+                pygame.Vector2(SCREEN_WIDTH//2, 0),
+                Planet(template=LAVA_PLANET),
+                50,
+                colors.red
             )
         ]
 

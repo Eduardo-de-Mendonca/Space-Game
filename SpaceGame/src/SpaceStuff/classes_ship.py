@@ -149,13 +149,13 @@ class PlanetInSpace:
     '''
     Um objeto representa um planeta no espaço. Tem informações para desenhar e colidir no espaço, além de ter referência para o Planet que será carregado quando o jogador pousar nele
     '''
-    def __init__(self, position, planet_data, difficulty_level):
+    def __init__(self, position, planet_data, difficulty_level, color = colors.blue):
         assert isinstance(position, pygame.math.Vector2)
         
         self.position = position
         self.planet_data = planet_data
         
-        self.color = colors.blue # Placeholder
+        self.color = color # Placeholder
         self.radius = PLANET_IN_SPACE_RADIUS
         self.difficulty_level = difficulty_level
 

@@ -10,9 +10,9 @@ Polir:
 Inventário:
     Adicionar botão direito para jogar itens fora
 
-Adicionar lógica de geração de vários planetas, com uma setinha apontando para o próximo "planeta sugerido" (vide Texto/Ideias/6_reta_final_dudu.txt)
+Adicionar lógica de geração de vários planetas
 
 Adicionar tela inicial
-    Com um texto indicando o objetivo do jogo. Incrementar a tela de game over para sugerir que o jogador se fortaleça em outro planeta
+    Com um texto indicando o objetivo do jogo e explicando os controles. Incrementar a tela de game over para sugerir que o jogador se fortaleça em outro planeta
 
 Adicionar um planeta com o boss final

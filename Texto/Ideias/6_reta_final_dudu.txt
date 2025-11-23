@@ -9,7 +9,12 @@ Ideia:
 
     Cada inimigo tem um nível. Cada planeta tem um nível, o qual indica o nível dos seus inimigos e dos seus drops.
     
-    Tem sempre uma seta cinza apontando para o planeta do final boss, o qual tem um nível muito alto. E uma seta de outra cor apontando para o planeta mais próximo (ou, em geral, para um "próximo planeta" sugerido, com um nível mais acessível)
+    Tem sempre uma seta cinza apontando para o planeta do final boss, o qual tem um nível muito alto.
+        E uma seta de outra cor apontando para o planeta mais próximo (ou, em geral, para um "próximo planeta" sugerido, com um nível mais acessível)
+
+        Melhor: podemos ir gerando os planetas que nem geramos os inimigos na superfície. De forma que o nível de dificuldade dos planetas tem chance maior de ser parecido com o melhor ataque que o jogador tem. Se houver planetas o suficiente, aí nem precisa ter seta para guiar o jogador até um planeta (ele vai achar naturalmente)
+
+        Só precisa de seta até o planeta do boss final (senão o jogador vai se perder e não vai conseguir zerar o jogo).
 
     Aí, o jogador é encorajado a explorar outros planetas para enfrentar o final boss.
         A tela inicial do jogo explica isso mais ou menos. Para reforçar, a tela de game over fala "tente explorar outros planetas para se fortalecer antes" ou algo do tipo

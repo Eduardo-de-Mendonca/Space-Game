@@ -55,7 +55,7 @@ class Enemy(pygame.sprite.Sprite):
 
     def take_damage(self, quantidade):
         self.vida -= quantidade
-        print(f"Inimigo tomou {quantidade} de dano. Vida restante: {self.vida}")
+        #print(f"Inimigo tomou {quantidade} de dano. Vida restante: {self.vida}")
         
         # Piscar de vermelho ou recuar (Opcional para o futuro)
         

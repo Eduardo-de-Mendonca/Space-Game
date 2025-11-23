@@ -11,6 +11,7 @@ from src.PlanetSurfaceStuff.player import *
 
 from src.TransitionStuff.transition import TransitionScreen
 from src.PlanetSurfaceStuff.enemy import Enemy
+from src.PlanetSurfaceStuff.surface_settings import *
 
 #from transition import TransitionScreen
 import random
@@ -41,8 +42,6 @@ class Level:
         self.planet = planet
 
         self.all_sprites = pygame.sprite.Group()
-
-
 
         # Nave
         self.entering_ship = False
@@ -91,6 +90,9 @@ class Level:
         # NOVO: Carregador de Assets
         self.object_assets = {} # Dicionário para guardar os sprites
         self.load_object_assets()
+
+        # Fonte para UI
+        self.font = pygame.font.SysFont("arial", 24)
 
     def load_object_assets(self):
         print("Loading object assets...")
@@ -252,6 +254,11 @@ class Level:
     def on_ship_interact(self):
         self.sublevel = TransitionScreen(self.screen, "Decolando...")
 
+    def draw_hud(self):
+        hud_lives = self.font.render(f"VIDAS: {self.player.lives}", HUD_ANTIALIASING, HUD_COLOR)
+
+        self.screen.blit(hud_lives, HUD_MARGIN)
+
     def run(self, dt):
         if self.sublevel != None:
             if isinstance(self.sublevel, TransitionScreen):
@@ -281,15 +288,11 @@ class Level:
             self.debug_grid_mode = not(self.debug_grid_mode)
             print(f"Debug Grid Mode: {self.debug_grid_mode}")
 
+        # Transições de tela
         # Checar abertura de inventário (tecla E)
         if input.just_pressed[pygame.K_e]:
             self.sublevel = InventoryScreen(self.screen, self.input_handler, self.save_data)
 
-        # --- Update Phase ---
-        self.camera.update(self.player.position)
-        self.all_sprites.update(input, dt)
-        self.manage_chunks()
-        
         if self.check_ship_interaction():
             self.on_ship_interact()
 
@@ -302,11 +305,17 @@ class Level:
         if atacou:
             self.resolve_attack()
 
+        # --- Update Phase ---
+        self.camera.update(self.player.position)
+        self.all_sprites.update(input, dt)
+        self.manage_chunks()
+
         # --- Draw Phase ---
         self.screen.fill('black')
         self.draw_layers() 
         self.draw_sprites()
         self.draw_ship()
+        self.draw_hud()
         
     def generate_debug_map(self):
         self.planet.generate_debug_map()

@@ -37,6 +37,9 @@ class Player(pygame.sprite.Sprite):
         self.attacking_item_image = None
         self.attacking_item_rect = None
 
+        # Vida
+        self.lives = 3
+
     def react_to_input(self, input):
         assert isinstance(input, InputFrame)
         keys = input.pressing

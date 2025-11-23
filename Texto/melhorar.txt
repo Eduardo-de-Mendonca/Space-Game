@@ -2,6 +2,10 @@ Superfície do planeta:
     Enquanto mexe, o quadrado dá uma trepidada esquisita
         Especialmente na diagonal. Deve ter a ver com algum tipo de arredondamento que é feito em algum momento. É bom resolver isso
 
+Inventário:
+    Melhorar aparência da função draw_text_rectangle de helper.py
+        Arredondar as bordas do retângulo, talvez colocar transparência, talvez mudar a fonte... tudo por meio de parâmetros customizáveis com valores default bons.
+
 Espaço:
     Mudei o botão de tiro para ser clique do mouse em vez de spacebar, para ser o mesmo botão da superfície. Porém, é um pouco contraintuitivo usar o clique do mouse para atirar em uma direção que não é a direção na qual o mouse está apontando (e sim a direção da nave)
 

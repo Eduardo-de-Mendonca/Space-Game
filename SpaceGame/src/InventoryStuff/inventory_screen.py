@@ -7,7 +7,7 @@ from src.SaveDataStuff.item import Item
 from src.InventoryStuff.inventory_settings import *
 from src.Config.settings import *
 
-from src.Others.helper import draw_text
+from src.Others.helper import draw_text_rectangle
 
 class InventoryScreen:
     '''
@@ -55,12 +55,19 @@ class InventoryScreen:
             #print(i)
             item = inv[i]
             assert isinstance(item, Item)
-            draw_text(scr, f'''
-            {item.name}
-            Poder de ataque: {item.attack_power}
-            ''',
-            mp[0],
-            mp[1]
+
+            draw_text_rectangle(
+                scr,
+                
+                [
+                    f'{item.name}',
+                    f'Poder de ataque: {item.attack_power}'
+                ],
+            
+                (
+                    mp[0],
+                    mp[1]
+                )
         )
 
         self.screen.fill('black')

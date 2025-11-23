@@ -37,11 +37,33 @@ def draw_text(screen, text, x, y):
     image = font.render(text, True, colors.white)
     screen.blit(image, (x, y))
 
-'''
-def draw_text_rectangle(screen, text, dest, font=fonts.arial, text_color = colors.white):
+def draw_text_rectangle(screen, text_list, dest, font=None, text_color = colors.white):
+    '''
+    Desenha um retângulo preto com o texto em cima. text_list é um list de strings, tal que cada uma vai em uma linha
+    '''
     assert isinstance(screen, pygame.Surface)
 
-    font = pygame.font.SysFont('Arial', 30)
-    img = font.render(text, True, text_color) 
-    screen.blit(img, (dest[0], dest[1]))
-'''
+    if font == None:
+        font = pygame.font.SysFont('Arial', 30)
+
+    images = []
+    for text in text_list:
+        img = font.render(text, True, text_color)
+        images.append(img)
+
+    # Determinar o width e height do Surface que criaremos
+    w = 0
+    h = 0
+    for img in images:
+        assert isinstance(img, pygame.Surface)
+        w = max(w, img.get_width())
+        h += img.get_height()
+
+    surf = pygame.Surface((w, h))
+    y = 0
+    for img in images:
+        assert isinstance(img, pygame.Surface)
+        surf.blit(img, (0, y))
+        y += img.get_height()
+
+    screen.blit(surf, (dest[0], dest[1]))

@@ -1,6 +1,8 @@
 Árvore de dependências do projeto
     Separando os arquivos em "alturas", tal que um arquivo só importa de outros de altura menor
 
+Está desatualizado. O certo seria eu organizar ele por pastas, de forma que todo mundo da mesma pasta fica na mesma altura. Aí ficaria mais fácil de atualizar. Mas estou sem tempo.
+
 Altura 0:
     src.Config.settings
     src.Config.planet_templates

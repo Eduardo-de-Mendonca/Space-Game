@@ -5,11 +5,6 @@ Polir:
     Fazer o ataque da espada seguir a posição do mouse em relação ao jogador
         Em vez de atacar só para a direita
 
-Adicionar vida ao jogador na superfície e incrementar os inimigos
-    Melhorar a lógica de pouso. Antes de pousar, o negócio deve mostrar o nível de dificuldade do planeta. Em vez de pousar instantaneamente quando ocorre colisão, o jogador deve decidir se quer pousar.
-
-    Como está, o difficulty_level do planeta não faz nada. Ele deve ser passado como parâmetro para o construtor do Level, para depois ser usado para determinar o HP dos inimigos spawnados
-
 Adicionar drops de itens
     A qualidade do drop do inimigo deve depender de seu nível
     Com isso, adicionamos a possibilidade de pegar itens e alterar o inventário.

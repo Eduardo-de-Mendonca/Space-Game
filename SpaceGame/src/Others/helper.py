@@ -37,11 +37,10 @@ def draw_text(screen, text, x, y):
     image = font.render(text, True, colors.white)
     screen.blit(image, (x, y))
 
-def draw_text_rectangle(screen, text_list, dest, font=None, text_color = colors.white):
+def _text_drawing_rectangle_image(text_list, font=None, text_color = colors.white):
     '''
-    Desenha um retângulo preto com o texto em cima. text_list é um list de strings, tal que cada uma vai em uma linha
+    Retorna uma Surface que é um retângulo preto com o texto em cima. text_list é um list de strings, tal que cada uma vai em uma linha.
     '''
-    assert isinstance(screen, pygame.Surface)
 
     if font == None:
         font = pygame.font.SysFont('Arial', 30)
@@ -66,4 +65,29 @@ def draw_text_rectangle(screen, text_list, dest, font=None, text_color = colors.
         surf.blit(img, (0, y))
         y += img.get_height()
 
+    return surf
+
+def draw_text_rectangle(screen, text_list, dest, font=None, text_color = colors.white):
+    '''
+    Desenha um retângulo preto com o texto em cima. text_list é um list de strings, tal que cada uma vai em uma linha. dest é o topleft do retângulo
+    '''
+    assert isinstance(screen, pygame.Surface)
+
+    surf = _text_drawing_rectangle_image(text_list, font, text_color)
+
     screen.blit(surf, (dest[0], dest[1]))
+
+def draw_text_rectangle_center(screen, text_list, dest_center, font=None, text_color = colors.white):
+    '''
+    Desenha um retângulo preto com o texto em cima. text_list é um list de strings, tal que cada uma vai em uma linha. dest_center é o centro do retângulo
+    '''
+    assert isinstance(screen, pygame.Surface)
+
+    surf = _text_drawing_rectangle_image(text_list, font, text_color)
+
+    w = surf.get_width()
+    h = surf.get_height()
+    left = dest_center[0] - w/2
+    top = dest_center[1] - h/2
+
+    screen.blit(surf, (left, top))

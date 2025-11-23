@@ -28,7 +28,7 @@ class Level:
     '''
     Um objeto Level representa a tela quando você está na superfície de um planeta
     '''
-    def __init__(self, screen, input_handler, save_data, planet):
+    def __init__(self, screen, input_handler, save_data, planet, difficulty_level):
         assert isinstance(screen, pygame.Surface)
         assert isinstance(input_handler, InputHandler)
         assert isinstance(save_data, SaveData)
@@ -40,6 +40,7 @@ class Level:
         self.save_data = save_data
         # The Planet is now just a seed and a generator
         self.planet = planet
+        self.difficulty_level = difficulty_level
 
         self.all_sprites = pygame.sprite.Group()
 
@@ -106,7 +107,7 @@ class Level:
         x = pos[0] + xdir*xdist
         y = pos[1] + ydir*ydist
 
-        enemy = Enemy(pos_x=x, pos_y=y, player_ref=self.player, max_hp=3)
+        enemy = Enemy(pos_x=x, pos_y=y, player_ref=self.player, max_hp=3*self.difficulty_level)
 
         self.all_sprites.add(enemy) # Para Update e Draw
         self.enemy_sprites.add(enemy) # Para Colisões

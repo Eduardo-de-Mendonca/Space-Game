@@ -14,9 +14,9 @@ class SaveData:
     def __init__(self):
         self.all_planets = [
             PlanetInSpace(
-                pygame.Vector2(500, 300),
+                pygame.Vector2(1000, 300),
                 Planet(seed = 5117,template = EARTH_PLANET),
-                3
+                1
             )
         ]
 

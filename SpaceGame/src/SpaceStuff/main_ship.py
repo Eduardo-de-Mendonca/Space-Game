@@ -2,8 +2,11 @@ import pygame
 import math, random
 
 from src.SpaceStuff.classes_ship import *
+
 from src.Others.camera import CameraWithoutZoom
 from src.Others.input import InputHandler
+from src.Others.helper import draw_text_rectangle_center
+
 from src.SaveDataStuff.save_data import SaveData
 from src.PlanetSurfaceStuff.level import Level
 from src.Config.settings import *
@@ -156,8 +159,26 @@ class AsteroidsGame:
             destination_id = 0
             self.player.planet_iframes = MAX_PLANET_IFRAMES
 
-            self.transitionee = Level(self.screen, self.input_handler, self.save_data, self.save_data.all_planets[destination_id].planet_data)
+            planet = self.save_data.all_planets[destination_id]
+
+            self.transitionee = Level(self.screen, self.input_handler, self.save_data, planet.planet_data, planet.difficulty_level)
+
             self.sublevel = TransitionScreen(self.screen, 'Pousando no planeta...')
+
+    def draw_hud(self):
+        '''
+        Desenha a HUD associada à quantidade de vidas do jogador, e a cada planeta
+        '''
+        hud_lives = self.font.render(f"VIDAS: {self.lives}", True, (255,255,255))
+        self.screen.blit(hud_lives, (10,40))
+
+        for p in self.planets:
+            tl = [
+                f'Poder de ataque sugerido: {p.difficulty_level}'
+            ]
+            wpos = p.position
+            spos = self.camera.world_to_screen(wpos)
+            draw_text_rectangle_center(self.screen, tl, spos)
 
     def run(self, dt):
         if self.sublevel != None:
@@ -211,5 +232,4 @@ class AsteroidsGame:
         for p in self.planets:
             p.draw(self.screen, self.camera)
 
-        hud_lives = self.font.render(f"VIDAS: {self.lives}", True, (255,255,255))
-        self.screen.blit(hud_lives, (10,40))
+        self.draw_hud()

@@ -52,7 +52,7 @@ class Level:
 
         # Itens droppados
         assert isinstance(self.save_data.all_item_kinds[0], ItemKind)
-        self.dropped_items = [DroppedItem(self.save_data.all_item_kinds[0].to_item(1), pygame.Vector2(100, 100))]
+        self.dropped_items = []
 
         self.ship_radius = 16
         self.sublevel = None
@@ -422,23 +422,31 @@ class Level:
         attacking_item = self.save_data.inventory[0] # O item selecionado
 
         inimigos_atingidos = []
-        for inimigo in self.enemy_sprites:
-            assert isinstance(inimigo, Enemy)
+        for enemy in self.enemy_sprites:
+            assert isinstance(enemy, Enemy)
 
-            if attack_hitbox.colliderect(inimigo.rect):
-                inimigos_atingidos.append(inimigo)
+            if attack_hitbox.colliderect(enemy.rect):
+                inimigos_atingidos.append(enemy)
 
-        for inimigo in inimigos_atingidos:
-            assert isinstance(inimigo, Enemy)
-            inimigo.take_damage(attacking_item.attack_power)
+        for enemy in inimigos_atingidos:
+            assert isinstance(enemy, Enemy)
+            died = enemy.take_damage(attacking_item.attack_power)
             
             # Empurrãozinho (Knockback)
-            if inimigo.position != self.player.position:
+            if enemy.position != self.player.position:
                 try:
-                    direcao_empurrao = (inimigo.position - self.player.position).normalize()
-                    inimigo.position += direcao_empurrao * 20
+                    direcao_empurrao = (enemy.position - self.player.position).normalize()
+                    enemy.position += direcao_empurrao * 20
                 except ValueError:
                     pass
+
+            # Dropar um item se morreu
+            if died:
+                item_kind = random.choice(self.save_data.all_item_kinds)
+                assert isinstance(item_kind, ItemKind)
+                item = item_kind.to_item(self.difficulty_level)
+                dropped_item = DroppedItem(item, enemy.position)
+                self.dropped_items.append(dropped_item)
 
     def check_enemy_collisions(self):
         '''

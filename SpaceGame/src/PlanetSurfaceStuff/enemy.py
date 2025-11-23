@@ -67,6 +67,9 @@ class Enemy(pygame.sprite.Sprite):
         self.position += self.patrol_direction * (self.velocidade * 0.5) * dt
 
     def take_damage(self, quantidade):
+        '''
+        Toma dano. Retorna True se morreu, e False se não morreu
+        '''
         self.hp -= quantidade
         #print(f"Inimigo tomou {quantidade} de dano. Vida restante: {self.vida}")
         
@@ -74,6 +77,7 @@ class Enemy(pygame.sprite.Sprite):
         
         if self.hp <= 0:
             self.morrer()
+            return True
 
     def morrer(self):
         print("Inimigo derrotado!")

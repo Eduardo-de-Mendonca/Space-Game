@@ -39,12 +39,17 @@ class SaveData:
         x = 0
         y = 0
         rarity_multiplier = 1.0
-        multiplier_increment = round((2.0 - 1.0)/total_item_amount, 1)
+        multiplier_increment = (2.0 - 1.0)/total_item_amount
 
         while i < total_item_amount:
             img = pixel_art.subsurface((x, y), (32, 32))
 
-            result.append(ItemKind(rarity_multiplier, img))
+            result.append(
+                ItemKind(
+                    round(rarity_multiplier, 1),
+                    img
+                )
+            )
 
             i += 1
             x += 32

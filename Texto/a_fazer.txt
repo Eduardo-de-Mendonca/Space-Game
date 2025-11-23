@@ -5,14 +5,9 @@ Polir:
     Fazer o ataque da espada seguir a posição do mouse em relação ao jogador
         Em vez de atacar só para a direita
 
-Adicionar drops de itens
-    A qualidade do drop do inimigo deve depender de seu nível
-    Com isso, adicionamos a possibilidade de pegar itens e alterar o inventário.
-
-    Se pá, podemos aqui adicionar a possibilidade de quebrar árvores
+    Adicionar a possibilidade de quebrar árvores
 
 Adicionar lógica de geração de vários planetas, com uma setinha apontando para o próximo "planeta sugerido" (vide Texto/Ideias/6_reta_final_dudu.txt)
-    Alterar lógica de pouso. Em vez de pousar quando há colisão, a colisão mostra o nível do planeta, e o jogador só pousa se quiser
 
 Adicionar tela inicial
     Com um texto indicando o objetivo do jogo. Incrementar a tela de game over para sugerir que o jogador se fortaleça em outro planeta

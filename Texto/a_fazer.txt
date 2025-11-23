@@ -7,7 +7,7 @@ Polir:
         E ver se a hitbox do ataque tá certinha. Parece que a espada acerta bem além do alcance da imagem.
 
 Adicionar vida ao jogador na superfície e incrementar os inimigos
-    Cada inimigo, penso, deveria ter um nível, que determina seu HP e a qualidade do item que dropa.
+    Dar a cada planeta um nível, que determina os inimigos gerador. Incrementar a lógica de geração de inimigos
 
 Adicionar drops de itens
     A qualidade do drop do inimigo deve depender de seu nível

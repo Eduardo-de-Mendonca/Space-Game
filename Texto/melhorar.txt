@@ -2,6 +2,9 @@ Superfície do planeta:
     Enquanto mexe, o quadrado dá uma trepidada esquisita
         Especialmente na diagonal. Deve ter a ver com algum tipo de arredondamento que é feito em algum momento. É bom resolver isso
 
+    A hitbox dos inimigos está toda quebrada
+        Já vi que o retângulo do inimigo é diferente do inimigo desenhado. E que a hitbox dos ataques é gigantesca
+
 Inventário:
     Melhorar aparência da função draw_text_rectangle de helper.py
         Arredondar as bordas do retângulo, talvez colocar transparência, talvez mudar a fonte... tudo por meio de parâmetros customizáveis com valores default bons.

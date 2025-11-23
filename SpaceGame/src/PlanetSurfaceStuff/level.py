@@ -73,8 +73,8 @@ class Level:
         # opcional, se quiser mudar o tamanho
         self.ship_image = pygame.transform.scale(self.ship_image, (60, 60))
 
-        inimigo1 = Enemy(pos_x=500, pos_y=500, player_ref=self.player)
-        inimigo2 = Enemy(pos_x=600, pos_y=400, player_ref=self.player)
+        inimigo1 = Enemy(pos_x=500, pos_y=500, player_ref=self.player, max_hp=3)
+        inimigo2 = Enemy(pos_x=600, pos_y=400, player_ref=self.player, max_hp=3)
 
         self.all_sprites.add(inimigo1, inimigo2) # Para Update e Draw
         self.enemy_sprites.add(inimigo1, inimigo2) # Para Colisões
@@ -255,9 +255,16 @@ class Level:
         self.sublevel = TransitionScreen(self.screen, "Decolando...")
 
     def draw_hud(self):
+        '''
+        Desenha o texto com a quantidade de vidas do jogador, e desenha barras de vida para os inimigos
+        '''
         hud_lives = self.font.render(f"VIDAS: {self.player.lives}", HUD_ANTIALIASING, HUD_COLOR)
 
         self.screen.blit(hud_lives, HUD_MARGIN)
+
+        for enemy in self.enemy_sprites:
+            assert isinstance(enemy, Enemy)
+            enemy.draw_hp_bar(self.screen, self.camera)
 
     def run(self, dt):
         if self.sublevel != None:

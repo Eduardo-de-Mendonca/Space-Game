@@ -1,5 +1,6 @@
 from src.Config.planet_templates import *
 from src.SaveDataStuff.save_data import SaveData
+from src.SaveDataStuff.item import ItemKind
 
 from src.Others.camera import Camera
 from src.Others.input import InputHandler
@@ -11,6 +12,7 @@ from src.PlanetSurfaceStuff.player import *
 
 from src.TransitionStuff.transition import TransitionScreen
 from src.PlanetSurfaceStuff.enemy import Enemy
+from src.PlanetSurfaceStuff.other_classes import DroppedItem
 from src.PlanetSurfaceStuff.surface_settings import *
 
 #from transition import TransitionScreen
@@ -48,19 +50,22 @@ class Level:
         self.entering_ship = False
         self.ship_pos = pygame.Vector2(200, 200) #Para teste deixei uma posição fixa
 
-        #inimigos
-        self.enemy_sprites = pygame.sprite.Group()
+        # Itens droppados
+        assert isinstance(self.save_data.all_item_kinds[0], ItemKind)
+        self.dropped_items = [DroppedItem(self.save_data.all_item_kinds[0].to_item(1), pygame.Vector2(100, 100))]
 
-        #Caso queira uma posição aletória opção abaixo
-        #self.ship_pos = (random.randint(0, WORLD_SIZE_IN_CHUNKS[0] * CHUNK_SIZE - 1), 
-        #random.randint(0, WORLD_SIZE_IN_CHUNKS[1] * CHUNK_SIZE - 1))
-        
         self.ship_radius = 16
         self.sublevel = None
         
         # The player is created at a WORLD position
         self.player = Player(PLAYER_START_POS, self.all_sprites)
         
+        #inimigos
+        self.enemy_sprites = pygame.sprite.Group()
+        
+        for _ in range(5):
+            self.spawn_enemy()
+
         # The camera will follow the player
         self.camera = Camera()
         
@@ -74,8 +79,7 @@ class Level:
         # opcional, se quiser mudar o tamanho
         self.ship_image = pygame.transform.scale(self.ship_image, (60, 60))
 
-        for _ in range(5):
-            self.spawn_enemy()
+
 
         self.debug_grid_mode = DEBUG_GRID_MODE_START # Começa ligado para você ver
 
@@ -173,6 +177,39 @@ class Level:
 
         # ATUALIZADO: draw_layers com Grid Mode
 
+    def update_dropped_items(self):
+        '''
+        Deleta itens droppados fora da tela, e checa colisões entre o jogador e os itens droppados, permitindo que o jogador os pegue
+        '''
+        p = self.player
+
+        # Deletar itens fora da tela
+        i = len(self.dropped_items) - 1
+        while 0 <= i:
+            di = self.dropped_items[i]
+            delete = False
+            if abs(p.position[0] - di.center[0]) > ITEM_MAX_X_DIST:
+                delete = True
+            if abs(p.position[1] - di.center[1]) > ITEM_MAX_Y_DIST:
+                delete = True
+
+            if delete: self.dropped_items.pop(i)
+
+            i -= 1
+
+        # Checar colisões entre o item e o jogador
+        inv = self.save_data.inventory
+        i = len(self.dropped_items) - 1
+        while 0 <= i:
+            di = self.dropped_items[i]
+            di_rect = di.get_rect()
+
+            if p.rect.colliderect(di_rect) and len(inv) < MAX_INVENTORY_SIZE:
+                inv.append(di.item)
+                self.dropped_items.pop(i)
+
+            i -= 1
+        
     def draw_layers(self):
         """
         Draws all layers: terrain first, then objects on top.
@@ -253,6 +290,9 @@ class Level:
             
             scaled_image = pygame.transform.scale(sprite.image, (zoomed_width, zoomed_height))
             self.screen.blit(scaled_image, screen_rect)
+
+    def draw_dropped_items(self):
+        for di in self.dropped_items: di.draw(self.screen, self.camera)
 
     def draw_ship(self):
         # Converte da posição do mundo para tela
@@ -341,12 +381,14 @@ class Level:
         # --- Update Phase ---
         self.camera.update(self.player.position)
         self.all_sprites.update(input, dt)
+        self.update_dropped_items()
         self.manage_chunks()
 
         # --- Draw Phase ---
         self.screen.fill('black')
         self.draw_layers() 
         self.draw_sprites()
+        self.draw_dropped_items()
         self.draw_ship()
         self.draw_hud()
         

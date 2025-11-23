@@ -1,3 +1,5 @@
+import pygame
+
 class ItemKind:
     def __init__(self, rarity_multiplier, image):
         self.rarity_multiplier = rarity_multiplier
@@ -9,5 +11,7 @@ class ItemKind:
 
 class Item:
     def __init__(self, attack_power, image):
+        assert isinstance(image, pygame.Surface)
+
         self.attack_power = attack_power
         self.image = image

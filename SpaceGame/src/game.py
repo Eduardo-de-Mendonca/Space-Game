@@ -49,8 +49,16 @@ class Game:
 
             # Gerenciar game over
             if isinstance(self.level, AsteroidsGame):
-                if self.level.state == asteroids_game_states.GAME_OVER:
+                # Game over a partir do jogo dos asteroides, ou então a partir da superfície
+                game_over = False
+                
+                if self.level.state == asteroids_game_states.GAME_OVER: game_over = True
+
+                elif isinstance(self.level.sublevel, Level) and self.level.sublevel.player.lives <= 0: game_over = True
+
+                if game_over:
                     self.level = GameOverScreen(self.screen, self.input_handler)
+
             elif isinstance(self.level, GameOverScreen):
                 if self.level.state == game_over_states.RESTART:
                     self.level = AsteroidsGame(self.screen, self.input_handler, self.save_data)

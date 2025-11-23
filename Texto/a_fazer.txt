@@ -7,7 +7,6 @@ Polir:
         E ver se a hitbox do ataque tá certinha. Parece que a espada acerta bem além do alcance da imagem.
 
 Adicionar vida ao jogador na superfície e incrementar os inimigos
-    Pensei em o jogador ter 3 vidas na superfície, igual tem no espaço.
     Cada inimigo, penso, deveria ter um nível, que determina seu HP e a qualidade do item que dropa.
 
 Adicionar drops de itens

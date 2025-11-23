@@ -37,8 +37,9 @@ class Player(pygame.sprite.Sprite):
         self.attacking_item_image = None
         self.attacking_item_rect = None
 
-        # Vida
+        # Vida e tomar dano
         self.lives = 3
+        self.damage_cooldown = 0
 
     def react_to_input(self, input):
         assert isinstance(input, InputFrame)
@@ -86,6 +87,10 @@ class Player(pygame.sprite.Sprite):
                 # Começa em ~90, vai até ~-90
                 progress = self.attack_timer / self.attack_duration
                 self.attack_angle = 90 - (180 * progress)
+
+        # Atualizar o cooldown de dano
+        if self.damage_cooldown > 0:
+            self.damage_cooldown -= 1
 
     # NOVO: Método que cria a área do ataque
     def get_attack_hitbox(self):

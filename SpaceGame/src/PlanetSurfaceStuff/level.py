@@ -305,6 +305,8 @@ class Level:
         if atacou:
             self.resolve_attack()
 
+        self.check_enemy_collisions()
+
         # --- Update Phase ---
         self.camera.update(self.player.position)
         self.all_sprites.update(input, dt)
@@ -364,3 +366,16 @@ class Level:
                     inimigo.position += direcao_empurrao * 20
                 except ValueError:
                     pass
+
+    def check_enemy_collisions(self):
+        '''
+        Checa se um inimigo está colidindo com o jogador. Se sim, subtrai 1 à vida do jogador (pois todos os inimigos dão a mesma quantidade de dano)
+        '''
+        for enemy in self.enemy_sprites:
+            assert isinstance(enemy, Enemy)
+            r1 = enemy.rect
+            r2 = self.player.rect
+
+            if r1.colliderect(r2) and self.player.damage_cooldown == 0:
+                self.player.lives -= 1
+                self.player.damage_cooldown = MAX_DAMAGE_COOLDOWN

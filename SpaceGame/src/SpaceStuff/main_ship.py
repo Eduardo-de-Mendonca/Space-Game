@@ -27,7 +27,7 @@ class AsteroidsGame:
 
         self.input_handler = input_handler
         self.save_data = save_data
-        self.planets = [PlanetInSpace(pygame.math.Vector2(500, 300), save_data.all_planets[0])]
+        self.planets = save_data.all_planets
 
         self.sublevel = None
         self.transitionee = None # Relevante quando sublevel é uma tela de transição. Determina para qual tela transicionaremos quando a transição acabar
@@ -156,7 +156,7 @@ class AsteroidsGame:
             destination_id = 0
             self.player.planet_iframes = MAX_PLANET_IFRAMES
 
-            self.transitionee = Level(self.screen, self.input_handler, self.save_data, self.save_data.all_planets[destination_id])
+            self.transitionee = Level(self.screen, self.input_handler, self.save_data, self.save_data.all_planets[destination_id].planet_data)
             self.sublevel = TransitionScreen(self.screen, 'Pousando no planeta...')
 
     def run(self, dt):

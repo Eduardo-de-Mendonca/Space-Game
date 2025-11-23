@@ -4,10 +4,11 @@ Polir:
 
     Fazer o ataque da espada seguir a posição do mouse em relação ao jogador
         Em vez de atacar só para a direita
-        E ver se a hitbox do ataque tá certinha. Parece que a espada acerta bem além do alcance da imagem.
 
 Adicionar vida ao jogador na superfície e incrementar os inimigos
-    Dar a cada planeta um nível, que determina os inimigos gerados.
+    Melhorar a lógica de pouso. Antes de pousar, o negócio deve mostrar o nível de dificuldade do planeta. Em vez de pousar instantaneamente quando ocorre colisão, o jogador deve decidir se quer pousar.
+
+    Como está, o difficulty_level do planeta não faz nada. Ele deve ser passado como parâmetro para o construtor do Level, para depois ser usado para determinar o HP dos inimigos spawnados
 
 Adicionar drops de itens
     A qualidade do drop do inimigo deve depender de seu nível

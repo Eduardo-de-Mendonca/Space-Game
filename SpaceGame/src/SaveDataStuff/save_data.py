@@ -4,7 +4,7 @@ from src.PlanetSurfaceStuff.planet import Planet
 from src.SpaceStuff.classes_ship import PlanetInSpace
 from src.Config.planet_templates import PlanetTemplate, EARTH_PLANET, LAVA_PLANET
 
-from src.SaveDataStuff.item import Item
+from src.SaveDataStuff.item import ItemKind
 
 class SaveData:
     '''
@@ -20,6 +20,37 @@ class SaveData:
             )
         ]
 
+        self.all_item_kinds = self.generate_item_kinds()
+        assert isinstance(self.all_item_kinds[0], ItemKind)
+
         self.inventory = [
-            Item('Graveto nível 6', 3, pygame.image.load('src/Assets/graveto.png').convert_alpha()),
-            Item('Espada nível 1', 1, pygame.image.load('src/Assets/espada.png').convert_alpha())]
+            self.all_item_kinds[0].to_item(1)
+            ]
+        
+    def generate_item_kinds(self):
+        '''
+        Retorna uma lista com vários tipos de item
+        '''
+        pixel_art = pygame.image.load('src/Assets/icones_armas.png').convert_alpha()
+        
+        result = []
+        total_item_amount = 10*9 + 1
+        i = 0
+        x = 0
+        y = 0
+        rarity_multiplier = 1.0
+        multiplier_increment = round((2.0 - 1.0)/total_item_amount, 1)
+
+        while i < total_item_amount:
+            img = pixel_art.subsurface((x, y), (32, 32))
+
+            result.append(ItemKind(rarity_multiplier, img))
+
+            i += 1
+            x += 32
+            if x >= 320:
+                x = 0
+                y += 32
+            rarity_multiplier += multiplier_increment
+
+        return result

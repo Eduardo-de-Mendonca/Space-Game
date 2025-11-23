@@ -60,7 +60,6 @@ class InventoryScreen:
                 scr,
                 
                 [
-                    f'{item.name}',
                     f'Poder de ataque: {item.attack_power}'
                 ],
             

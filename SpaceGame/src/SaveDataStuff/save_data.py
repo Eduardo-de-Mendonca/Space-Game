@@ -13,4 +13,6 @@ class SaveData:
     def __init__(self):
         self.all_planets = [Planet(seed = 5117,template = EARTH_PLANET)]
 
-        self.inventory = [Item('Espada nível 1', 1, pygame.image.load('src/Assets/espada.png').convert_alpha())]
+        self.inventory = [
+            Item('Graveto nível 6', 3, pygame.image.load('src/Assets/graveto.png').convert_alpha()),
+            Item('Espada nível 1', 1, pygame.image.load('src/Assets/espada.png').convert_alpha())]

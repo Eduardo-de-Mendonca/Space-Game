@@ -4,6 +4,8 @@ from src.SaveDataStuff.save_data import SaveData
 from src.Others.camera import Camera
 from src.Others.input import InputHandler
 
+from src.InventoryStuff.inventory_screen import InventoryScreen
+
 from src.PlanetSurfaceStuff.planet import Planet
 from src.PlanetSurfaceStuff.player import *
 
@@ -252,18 +254,22 @@ class Level:
 
     def run(self, dt):
         if self.sublevel != None:
-            assert isinstance(self.sublevel, TransitionScreen)
-
-            if self.sublevel.active == False:
-                self.sublevel = None
-                self.running = False # Se terminou de transicionar, então vamos decolar, e podemos sair desta tela
-                return # Retorno direto para não desenhar esta tela
-            else:
-                self.sublevel.run()
-                return
-
-        self.screen.fill('black')
-
+            if isinstance(self.sublevel, TransitionScreen):
+                if self.sublevel.active == False:
+                    self.sublevel = None
+                    self.running = False # Se terminou de transicionar, então vamos decolar, e podemos sair desta tela
+                    return # Retorno direto para não desenhar esta tela
+                else:
+                    self.sublevel.run()
+                    return
+                
+            if isinstance(self.sublevel, InventoryScreen):
+                if not(self.sublevel.running):
+                    self.sublevel = None
+                else:
+                    self.sublevel.run()
+                    return
+                    
         # Ler o input
         input = self.input_handler.get_input()
 
@@ -275,6 +281,10 @@ class Level:
             self.debug_grid_mode = not(self.debug_grid_mode)
             print(f"Debug Grid Mode: {self.debug_grid_mode}")
 
+        # Checar abertura de inventário (tecla E)
+        if input.just_pressed[pygame.K_e]:
+            self.sublevel = InventoryScreen(self.screen, self.input_handler, self.save_data)
+
         # --- Update Phase ---
         self.camera.update(self.player.position)
         self.all_sprites.update(input, dt)
@@ -285,7 +295,7 @@ class Level:
 
         # DETECTAR ATAQUE (Botão Esquerdo do Mouse)
         atacou = False
-        if pygame.mouse.get_pressed()[0]: # [0] é o botão esquerdo
+        if input.mouse_justpressed[0]: # [0] é o botão esquerdo
             atacou = self.attempt_attack()
 
         # Se atacou neste frame, desenha o ataque e checa dano
@@ -293,6 +303,7 @@ class Level:
             self.resolve_attack()
 
         # --- Draw Phase ---
+        self.screen.fill('black')
         self.draw_layers() 
         self.draw_sprites()
         self.draw_ship()

@@ -6,10 +6,9 @@ Polir:
         Em vez de atacar só para a direita
         E ver se a hitbox do ataque tá certinha. Parece que a espada acerta bem além do alcance da imagem.
 
-Adicionar um inventário
-    O ataque é feito com o item que está selecionado. O poder do ataque depende do poder do item. E a imagem da animação de ataque depende da imagem do item.
-
-    O inventário pode começar apenas com a espadinha que já temos agora
+Inventário:
+    Melhorar a formatação do texto que aparece
+        Colocar ele em cima de um retângulo, e com fonte bonitinha
 
 Adicionar vida ao jogador na superfície e incrementar os inimigos
     Pensei em o jogador ter 3 vidas na superfície, igual tem no espaço.

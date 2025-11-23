@@ -16,6 +16,13 @@ class InputFrame:
 
         self.mousewheel_x = 0
         self.mousewheel_y = 0
+        self.mouse_pressing = []
+        self.mouse_justpressed = []
+        for button in pygame.mouse.get_pressed():
+            self.mouse_pressing.append(False)
+            self.mouse_justpressed.append(False)
+
+        self.mouse_pos = (0, 0)
 
 class InputHandler:
     '''
@@ -35,12 +42,23 @@ class InputHandler:
         pi = self.prev_input
         ni = self.next_input
         
+        # Ler todo o input e guardar em ni
         keys = pygame.key.get_pressed()
         # keys é um vetor de buleanos, em que o índice indica a tecla e o valor indica se está sendo apertada. Na verdade, é um objeto ScancodeWrapper que se comporta dessa maneira
         ni.pressing = keys
         for k in range(len(keys)):
             # Uma tecla acabou de ser apertada se não foi apertada frame passado
             ni.just_pressed[k] = ni.pressing[k] and not(pi.pressing[k])
+
+        # Botões do mouse
+        mouse_buttons = pygame.mouse.get_pressed()
+        ni.mouse_pressing = mouse_buttons
+        for k in range(len(mouse_buttons)):
+            ni.mouse_justpressed[k] = ni.mouse_pressing[k] and not(pi.mouse_pressing[k])
+        
+        # Posição do mouse
+        ni.mouse_pos = pygame.mouse.get_pos()
+
 
         # O next vira o prev, para ser usado como referência no próximo frame
         self.prev_input = ni

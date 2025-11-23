@@ -3,7 +3,16 @@ Superfície do planeta:
         Especialmente na diagonal. Deve ter a ver com algum tipo de arredondamento que é feito em algum momento. É bom resolver isso
 
 Espaço:
-    Acho uma boa dar tiro com o mouse, mesmo botão do ataque na superfície.
+    Mudei o botão de tiro para ser clique do mouse em vez de spacebar, para ser o mesmo botão da superfície. Porém, é um pouco contraintuitivo usar o clique do mouse para atirar em uma direção que não é a direção na qual o mouse está apontando (e sim a direção da nave)
+
+    Temos 3 opções principais:
+        Voltar para o botão anterior
+            Aí fica inconsistente com a superfície. É bom deixar isso bem sinalizado em algum lugar para o jogador
+
+        Fazer o tiro ir na direção do mouse
+            Isso deixa o jogo dos asteroides um pouco mais fácil. Mas pode ser mais divertido. É uma decisão criativa.
+
+        Deixar como está
 
 A tela é pygame.resizable, mas temos constantes indicando o tamanho da tela, as quais são lidas em vários lugares
     Ou seja, quando o jogador altera o tamanho da janela, isso quebra o jogo

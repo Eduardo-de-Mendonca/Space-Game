@@ -1,0 +1,13 @@
+from src.Config.settings import SCREEN_WIDTH
+import pygame
+
+OVERLAY_COLOR = pygame.Color(0, 0, 0)
+OVERLAY_ALPHA = 128
+
+MARGIN = 64
+
+SQUARE_WIDTH = 64
+SQUARES_PER_LINE = (SCREEN_WIDTH - MARGIN*2)//SQUARE_WIDTH
+SQUARE_COLOR = pygame.Color(0, 0, 0)
+SQUARE_ALPHA = 128
+

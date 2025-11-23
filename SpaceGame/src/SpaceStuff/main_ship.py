@@ -184,8 +184,8 @@ class AsteroidsGame:
         # Movimenta o jogador
         self.player.update(keys)
 
-        # Dá tiro
-        if input.just_pressed[pygame.K_SPACE]:
+        # Dá tiro - era espaço, agora é clique
+        if input.mouse_justpressed[0]:
             bx, by, ang = self.player.shoot()
             self.bullets.append(Bullet(bx, by, ang))
 

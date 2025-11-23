@@ -37,6 +37,9 @@ ASTEROIDS_SPAWNED_PER_WAVE = 8
 MAX_PLANET_IFRAMES = 180
 MAX_ASTEROID_IFRAMES = 180
 
+# Settings associados a saves e inventário (mas não restritos à tela de inventário)
+MAX_INVENTORY_SIZE = 18*9
+
 # Settings de debug
 DEBUG_SHOW_FPS = True
 DEBUG_GRID_MODE_START = False # Começa sem mostrar o grid. Podemos mudar isso ao longo do desenvolvimento à vontade, conforme quisermos

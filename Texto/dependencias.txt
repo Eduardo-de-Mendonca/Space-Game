@@ -13,6 +13,8 @@ Altura 1:
     src.Others.helper
     src.Others.input
 
+    src.InventoryStuff.inventory_settings
+
     src.TransitionStuff.transition
 
     src.PlanetSurfaceStuff.planet
@@ -24,6 +26,7 @@ Altura 2:
     src.SpaceStuff.classes_ship
 
 Altura 3:
+    src.InventoryStuff.inventory_screen
     src.PlanetSurfaceStuff.level
 
 Altura 4:

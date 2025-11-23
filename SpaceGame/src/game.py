@@ -1,3 +1,7 @@
+# Antes de tudo, importar pygame, para os módulos importados já poderem usar pygame
+import pygame
+pygame.init()
+
 from src.Others.input import InputHandler
 from src.Others.helper import draw_text
 

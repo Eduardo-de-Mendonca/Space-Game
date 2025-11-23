@@ -36,3 +36,12 @@ def draw_text(screen, text, x, y):
     font = pygame.font.SysFont('Arial', 30)
     image = font.render(text, True, colors.white)
     screen.blit(image, (x, y))
+
+'''
+def draw_text_rectangle(screen, text, dest, font=fonts.arial, text_color = colors.white):
+    assert isinstance(screen, pygame.Surface)
+
+    font = pygame.font.SysFont('Arial', 30)
+    img = font.render(text, True, text_color) 
+    screen.blit(img, (dest[0], dest[1]))
+'''

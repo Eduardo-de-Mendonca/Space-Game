@@ -4,10 +4,13 @@ from pygame.math import Vector2
 import random
 
 from src.PlanetSurfaceStuff.surface_settings import *
+from src.PlanetSurfaceStuff.player import Player
 from src.Others.camera import Camera
 
 class Enemy(pygame.sprite.Sprite):
     def __init__(self, pos_x, pos_y, player_ref, max_hp):
+        assert isinstance(player_ref, Player)
+
         super().__init__() 
         self.player = player_ref 
         self.image = pygame.Surface((32, 32)) 
@@ -37,6 +40,13 @@ class Enemy(pygame.sprite.Sprite):
         
         self.rect.center = self.position
 
+        # Se estou muito distante do jogador, morro
+        dx = abs(self.position[0] - self.player.position[0])
+        dy = abs(self.position[1] - self.player.position[1])
+
+        if dx > ENEMY_MAX_X_DIST or dy > ENEMY_MAX_Y_DIST:
+            self.morrer()
+        
     def perseguir(self, dt):
         if self.player.position == self.position: return
         try:

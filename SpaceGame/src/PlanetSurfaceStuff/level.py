@@ -73,11 +73,8 @@ class Level:
         # opcional, se quiser mudar o tamanho
         self.ship_image = pygame.transform.scale(self.ship_image, (60, 60))
 
-        inimigo1 = Enemy(pos_x=500, pos_y=500, player_ref=self.player, max_hp=3)
-        inimigo2 = Enemy(pos_x=600, pos_y=400, player_ref=self.player, max_hp=3)
-
-        self.all_sprites.add(inimigo1, inimigo2) # Para Update e Draw
-        self.enemy_sprites.add(inimigo1, inimigo2) # Para Colisões
+        for _ in range(5):
+            self.spawn_enemy()
 
         self.debug_grid_mode = DEBUG_GRID_MODE_START # Começa ligado para você ver
 
@@ -93,6 +90,28 @@ class Level:
 
         # Fonte para UI
         self.font = pygame.font.SysFont("arial", 24)
+
+    def spawn_enemy(self):
+        '''
+        Gera e spawna um inimigo
+        '''
+        # Determinar se o inimigo vai ser spawnado para a esquerda ou para a direita
+        xdir = random.choice([-1, 1])
+        ydir = random.choice([-1, 1])
+
+        xdist = random.randint(ENEMY_MIN_X_DIST, ENEMY_MAX_X_DIST)
+        ydist = random.randint(ENEMY_MIN_Y_DIST, ENEMY_MAX_Y_DIST)
+
+        pos = self.player.position
+        x = pos[0] + xdir*xdist
+        y = pos[1] + ydir*ydist
+
+        enemy = Enemy(pos_x=x, pos_y=y, player_ref=self.player, max_hp=3)
+
+        self.all_sprites.add(enemy) # Para Update e Draw
+        self.enemy_sprites.add(enemy) # Para Colisões
+
+        print(f'Spawnei {x, y}')
 
     def load_object_assets(self):
         print("Loading object assets...")
@@ -313,6 +332,10 @@ class Level:
             self.resolve_attack()
 
         self.check_enemy_collisions()
+
+        # Se alguém morreu, spawnamos novos inimigos
+        while len(self.enemy_sprites) < ENEMY_AMOUNT:
+            self.spawn_enemy()
 
         # --- Update Phase ---
         self.camera.update(self.player.position)

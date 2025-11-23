@@ -7,7 +7,7 @@ Polir:
         E ver se a hitbox do ataque tá certinha. Parece que a espada acerta bem além do alcance da imagem.
 
 Adicionar vida ao jogador na superfície e incrementar os inimigos
-    Dar a cada planeta um nível, que determina os inimigos gerador. Incrementar a lógica de geração de inimigos
+    Dar a cada planeta um nível, que determina os inimigos gerados.
 
 Adicionar drops de itens
     A qualidade do drop do inimigo deve depender de seu nível

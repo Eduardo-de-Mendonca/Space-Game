@@ -83,13 +83,10 @@ class Level:
 
         self.debug_grid_mode = DEBUG_GRID_MODE_START # Começa ligado para você ver
 
-        # NOVO: O "Delta File" / "Arquivo TXT"
         # Chave: (world_x, world_y), Valor: new_object_id
-        # Isso armazena TODAS as mudanças feitas pelo jogador
         self.world_changes = {} 
-        # Ex: self.world_changes[(100, 150)] = ObjectType.NONE # Árvore quebrou
 
-        # NOVO: Carregador de Assets
+        # Carregador de Assets
         self.object_assets = {} # Dicionário para guardar os sprites
         self.load_object_assets()
 
@@ -123,10 +120,8 @@ class Level:
         for obj_type, props in OBJECT_PROPERTIES.items():
             if props['sprite_path']:
                 try:
-                    # CORREÇÃO 1: .convert_alpha() é crucial para transparência
                     sprite = pygame.image.load(props['sprite_path']).convert_alpha()
                     
-                    # CORREÇÃO 2: NÃO escalar a imagem aqui. Carrega na resolução total.
                     # Apenas guarde o sprite original.
                     self.object_assets[obj_type] = sprite
                     print(f"Loaded asset: {props['sprite_path']}")
@@ -140,7 +135,6 @@ class Level:
         """
         visible_chunks_x, visible_chunks_y = self.camera.get_visible_chunk_coords()
         
-        # --- Load new chunks ---
         for cx in visible_chunks_x:
             for cy in visible_chunks_y:
                 # Check if chunk is within finite world bounds
@@ -165,7 +159,6 @@ class Level:
                     new_chunk = Chunk(cx, cy, terrain_data, object_data)
                     self.loaded_chunks[chunk_coord] = new_chunk
 
-        # --- Unload old chunks ---
         chunks_to_unload = set()
         for chunk_coord in self.loaded_chunks:
             cx, cy = chunk_coord
@@ -174,8 +167,6 @@ class Level:
                 
         for chunk_coord in chunks_to_unload:
             del self.loaded_chunks[chunk_coord]
-
-        # ATUALIZADO: draw_layers com Grid Mode
 
     def update_dropped_items(self):
         '''
@@ -214,7 +205,6 @@ class Level:
         """
         Draws all layers: terrain first, then objects on top.
         """
-        # CORREÇÃO DE ESCALA: TILE_SIZE agora deve ser 16 ou 32 no seu settings.py
         zoomed_tile_size = floor(TILE_SIZE * self.camera.zoom)
         if zoomed_tile_size <= 0: return 
         
@@ -235,7 +225,6 @@ class Level:
                     color = colors.TILE_COLOR_MAP.get(tile_type, colors.black)
                     pygame.draw.rect(self.screen, color, rect)
 
-                    # NOVO: Desenha o Grid de Debug
                     if self.debug_grid_mode and zoomed_tile_size > 4: # Só desenha se for visível
                         pygame.draw.rect(self.screen, colors.black, rect, 1) # '1' = contorno
 
@@ -256,15 +245,12 @@ class Level:
 
                         sprite = self.object_assets.get(object_type)
                         if sprite:
-                            # CORREÇÃO 2: Escala o sprite original (full-res)
-                            # para o tamanho de zoom final. Muito mais qualidade!
                             zoomed_sprite = pygame.transform.scale(sprite, (zoomed_tile_size, zoomed_tile_size))
                             self.screen.blit(zoomed_sprite, rect.topleft)
                         else:
                             color = colors.OBJECT_COLOR_MAP.get(object_type, colors.black)
                             pygame.draw.rect(self.screen, color, rect)
                         
-                        # NOVO: Desenha o Grid de Debug por CIMA dos objetos também
                         if self.debug_grid_mode and zoomed_tile_size > 4:
                             pygame.draw.rect(self.screen, colors.black, rect, 1)
 

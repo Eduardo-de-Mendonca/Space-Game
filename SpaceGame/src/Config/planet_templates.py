@@ -1,8 +1,7 @@
 from dataclasses import dataclass, field
 import pygame
-from enum import IntEnum # Bonus suggestion!
+from enum import IntEnum
 
-# Bonus: Use IntEnum for your tiles. It's cleaner.
 class TileType(IntEnum):
     DEEP_WATER = 0
     WATER = 1
@@ -44,7 +43,7 @@ OBJECT_PROPERTIES = {
     ObjectType.TREE: {
         'walkable': False, 
         'resource': 'wood', 
-        'sprite_path': 'src/assets/tree.png', # Assumindo que você tem essa pasta
+        'sprite_path': 'src/assets/tree.png',
         'fallback_color': (0, 102, 0) # Verde escuro
     },
     ObjectType.ROCK: {
@@ -93,7 +92,7 @@ class colors:
         if props['fallback_color']
     }
 
-# --- DATA STRUCTURE DEFINITIONS ---
+# DATA STRUCTURE DEFINITIONS
 @dataclass
 class NoiseConfig:
     scale: float
@@ -130,9 +129,7 @@ class PlanetTemplate:
     tile_map: PlanetTileMap
 
 
-# --- TEMPLATE DEFINITIONS ---
-# Now you just create *instances* of your data classes
-# Your IDE will help you fill this out!
+# TEMPLATE DEFINITIONS
 
 EARTH_PLANET = PlanetTemplate(
     template_id=1,
@@ -174,8 +171,9 @@ LAVA_PLANET = PlanetTemplate(
     )
 )
 
-# --- MANAGER DICTIONARY ---
+# MANAGER DICTIONARY
 TEMPLATES_BY_ID = {
     1: EARTH_PLANET,
     2: LAVA_PLANET
+
 }

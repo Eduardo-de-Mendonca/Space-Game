@@ -5,9 +5,7 @@ from src.Config.planet_templates import *
 
 class Planet:
     """
-    This class is now a PURE GENERATOR. It holds no map data.
-    Its only job is to answer the question:
-    "What is the tile data for the chunk at (chunk_x, chunk_y)?"
+    "What is the tile data for the chunk at (chunk_x, chunk_y)"
     """
     def __init__(self, seed=None, template: PlanetTemplate = EARTH_PLANET):
         if seed is None:
@@ -53,12 +51,12 @@ class Planet:
         return val
 
     def get_object_noise(self, world_x, world_y):
-        noise_scale = 10.0 # Pequeno, para ser "pontilhado"
+        noise_scale = 10.0 # Pequeno
         val = noise.snoise2(
             world_x / noise_scale, 
             world_y / noise_scale, 
             octaves=1, 
-            base=self.seed + 2 # Seed diferente!
+            base=self.seed + 2 # Seed diferente
         )
         val = (val +1)/2 # 0.0 to 1.0
         return val
@@ -135,7 +133,6 @@ class Planet:
     def generate_debug_map(self):
         """
         Generates a 1-pixel-per-tile map of the *entire* finite world.
-        This is your "bird's-eye view" for debugging.
         (Atualizado para desenhar objetos também)
         """
         print("Generating debug map (this may take a moment)...")

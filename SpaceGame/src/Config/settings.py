@@ -20,7 +20,6 @@ CHUNK_SIZE = 16 # How many tiles in one chunk (16x16)
 CHUNK_SIZE_PIXELS = TILE_SIZE * CHUNK_SIZE
 
 # Define a FINITE world size in chunks (e.g., 64x64 chunks)
-# For an "infinite" world, you would remove this check
 WORLD_SIZE_IN_CHUNKS = (64*1, 64*1)
 WORLD_SIZE_PIXELS = (
     WORLD_SIZE_IN_CHUNKS[0] * CHUNK_SIZE_PIXELS,
